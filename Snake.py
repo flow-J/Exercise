@@ -1,5 +1,5 @@
 # coding: utf-8
-
+#####
 import random, pygame, sys, threading # 随机， pygame， ，线程
 from pygame.locals import *
 
