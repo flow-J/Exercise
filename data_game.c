@@ -352,7 +352,7 @@ int main()
 
 }
 */
-
+/*
 
 
 #include <stdio.h>
@@ -414,6 +414,230 @@ int main()
     return 0;
 
 }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+#include <stdio.h>
+struct note
+{
+    int x;
+    int y;
+    int f;
+    int s;//setps
+};
+
+int main()
+{
+    struct note que[2501];
+
+    int a[51][51]={0},book[51][51]={0};
+    int next[4][2] = {  { 0, 1},
+                        { 1, 0},
+                        { 0,-1},
+                        (-1, 0) };
+
+    int head,tail;
+    int i,j,k,n,m,startx,starty,p,q,tx,ty,flag;
+
+    scanf("%d %d",&n,&m);
+    for(i=1;i<=n;i++)
+        for(j=1;j<=m;j++)
+            scanf("%d",&a[i][j]);
+    scanf("%d %d %d %d",&startx,&starty,&p,&q);
+
+    head=1;
+    tail=1;
+
+    que[tail].x=startx;
+    que[tail].y=starty;
+    que[tail].f=0;
+    que[tail].s=0;
+    tail++;
+    book[startx][starty]=1;
+
+    flag=0;
+
+    while(head<tail) 
+    {
+        for(k=0;k<=3;k++)
+        {
+            tx=que[head].x+next[k][0];
+            ty=que[head].y+next[k][1];
+
+            if(tx<1 || tx>n || ty<1 || ty>m)
+                continue;
+
+            if(a[tx][ty]==0 && book[tx][ty]==0)
+            {
+                book[tx][ty]=1;
+                que[tail].x=tx;
+                que[tail].y=tx;
+                que[tail].f=head;
+
+                que[tail].s=que[head].s+1;
+                tail++;
+            }
+
+            if(tx==p && ty==q)
+            {
+                flag=1;
+                break;
+
+            }
+        }
+        if(flag==1)
+            break;
+        head++;
+
+    }
+
+    printf("%d",que[tail-1].s);
+
+    getchar();getchar();
+    return 0;
+
+
+
+}
+*/
+
+
+
+
+
+
+/*
+
+#include <stdio.h>
+struct note
+{
+    int x;
+    int y;
+};
+
+char a[20][21];
+
+int getnum(int i,int j)
+{
+    int sum,x,y;
+    sum = 0;
+
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        x--;
+    }
+
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        x++;
+    }
+
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        y--;
+    }
+
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        y++;
+    }
+    return sum;
+}
+
+int main()
+{
+    struct note que[401];
+    int head,tail;
+    int book[20][20]={0};
+    int i,j,k,sum,max=0,mx,my,n,m,startx,starty,tx,ty;
+
+    int next[4][2]={ { 0, 1},
+        { 1,0},
+        { 0,-1},
+        {-1,0} };
+
+    scanf("%d %d %d %d",&n,&m,&startx,&starty);
+
+    for(i=0;i<=n-1;i++)
+        scanf("%s",a[i]);
+
+    head=1;
+    tail=1;
+
+    que[tail].x=startx;
+    que[tail].y=starty;
+    tail++;
+    book[startx][starty]=1;
+    max=getnum(startx,starty);
+    mx=startx;
+    my=starty;
+
+    while(head<tail)
+    {
+        for(k=0;k<=3;k++)
+        {
+            tx=que[head].x+next[k][0];
+            ty=que[head].y+next[k][1];
+
+            if(tx<0 || tx>n-1 || ty<0 || ty>m-1)
+                continue;
+
+            if(a[tx][ty]=='.' && book[tx][ty]==0)
+            {
+                book[tx][ty]=1;
+                que[tail].x=tx;
+                que[tail].y=ty;
+                tail++;
+
+                sum=getnum(tx, ty);
+                //update max value
+                if(sum>max)
+                {
+                    max=sum;
+                    mx=tx;
+                    my=ty;
+
+                }
+
+            }
+        }
+        head++;
+    }
+    printf("when boom on the (%d,%d), can kill %d people\n",mx,my,max) ;
+
+    getchar();getchar();
+    return 0;
+
+}
+*/
 
 
 
@@ -438,41 +662,64 @@ int main()
 
 
 
+#include <stdio.h>
+char a[20][21];
+int book[20][20],max,mx,my,n,m;
+int getnum(int i,int j)
+{
+    int sum,x,y;
+    sum=0;
 
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        x--;
+    }
 
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        x++;
+    }
 
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        y--;
+    }
 
+    x=i; y=j;
+    while(a[x][y]!='#')
+    {
+        if(a[x][y]=='G')
+            sum++;
+        y++;
 
+    }
+    return sum;
+}
 
+void dfs(int x, int y)
+{
+    int next[4][2]={ { 0, 1},
+        { 1, 0},
+        { 0,-1},
+        {-1, 0} };
+    int k,sum,tx,ty;
 
+    sum=getnum(x,y);
 
+    if(sum>max)
+    {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+}
 
 
 
