@@ -660,7 +660,7 @@ int main()
 
 
 
-
+/*
 
 #include <stdio.h>
 char a[20][21];
@@ -759,6 +759,107 @@ int main()
     getchar();getchar();
     return 0;
 }
+
+*/
+
+
+
+
+
+
+#include <stdio.h>
+struct note
+{
+    int x;
+    int y;
+
+};
+
+int main()
+{
+    struct note que[2501];
+    int head, tail;
+    int a[51][51];
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
