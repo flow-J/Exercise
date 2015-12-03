@@ -717,8 +717,47 @@ void dfs(int x, int y)
 
     if(sum>max)
     {
+        max=sum;
+        mx=x;
 
     }
+
+
+    for(k=0;k<=3;k++)
+    {
+        tx=x+next[k][0];
+        ty=y+next[k][1];
+
+        if(tx<0 || tx>n-1 || ty<0 || ty>m-1)
+            continue;
+        if(a[tx][ty]=='.' && book[tx][ty]==0)
+        {
+            book[tx][ty]=1;
+            dfs(tx,ty);
+        }
+    }
+    return ;
+}
+
+int main()
+{
+    int i,startx,starty;
+    scanf("%d %d %d %d",&n,&m,&startx,&starty);
+
+    for(i=0;i<=n-1;i++)
+        scanf("%s",a[i]);
+
+    book[startx][starty]=1;
+    max=getnum(startx,starty);
+    mx=startx;
+    my=starty;
+    
+    dfs(startx,starty);
+
+    printf("when the boom on the(%d,%d),can kill %d human\n",mx,my,max);
+
+    getchar();getchar();
+    return 0;
 }
 
 
