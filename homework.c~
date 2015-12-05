@@ -1,0 +1,92 @@
+/*include <stdio.h>
+int main()
+{
+    int a[1001], n, i, t;
+    for(i=1;i<=1000;i++)
+        a[i]=0;//initialization
+
+    scanf("%d",&n);
+    for(i=1;i<=n;i++)
+    {
+        scanf("%d",&t);
+        a[t]=1;
+    }
+
+    for(i=1;i<=1000;i++)
+    {
+        if(a[i]==1)
+            printf("%d ",i);
+    }
+
+
+    getchar();getchar();
+    return 0;
+*/
+
+
+/*
+#include <stdio.h>
+int main()
+{
+    int a[101], n, i, j, t;
+
+    scanf("%d",&n);
+    for(i=1;i<=n;i++)
+    {
+        scanf("%d",&a[i]);
+    }
+
+
+    for(i=1;i<=n-1;i++)
+    {
+        for(j=1;j<=n-i;j++)
+        {
+            if(a[j]>a[j+1])
+            {   t=a[j]; a[j]=a[j+1]; a[j+1]=t;    }
+        }
+    }
+
+    printf("%d ",a[1]);
+    for(i=2;j<=n;i++)
+    {
+        if( a[i] != a[i-1] )
+            printf("%d ",a[i])
+    }
+]
+    getchar();getchar();
+    return 0;
+
+*************/
+
+
+
+#include <stdio.h>
+
+int main()
+{
+    int number[102]={0, 6, 3, 1 ,7, 5, 8, 9, 2, 4},head,tail;
+    int i;
+    head=1;
+    tail=10;
+    while(head<tail)
+    {
+        printf("%d ",number[head]);
+        head++;
+    
+
+    number[tail]=number[head];
+    tail++;
+
+    head++;
+    }
+
+    getchar();getchar();
+    return 0;
+}
+
+
+
+
+
+
+

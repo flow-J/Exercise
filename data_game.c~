@@ -858,7 +858,7 @@ int main()
 
 
 
-/*
+
 
 #include <stdio.h>
 int a[51][51];
@@ -909,20 +909,14 @@ int main()
 }
 
 
-*
-*
-* /
 
-#include <stdio.h>
-int a[51][51];
-int book[51][51],n,m,flag=0;
-void dfs(int x,int y,int front)
-{
-    int i;
 
-}
 
-**/
+
+
+
+
+
 
 
 
