@@ -1,8 +1,8 @@
 #define STACK_TYPE int
-
+#include <stddef.h>
 /* push */
 
-void push( STACK_TPE value );
+void push( STACK_TYPE value );
 
 /* pop */
 void pop( void );
