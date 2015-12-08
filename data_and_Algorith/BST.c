@@ -1,11 +1,7 @@
-typedef int Type;
+#include <stdio.h>
+#include <stdlib.h>
+#include "bstree.h"
 
-typedef struct BSTreeNode{
-    Type    Key;
-    struct  BSTreeNode *left;
-    struct  BSTreeNode *right;
-    struct  BSTreeNode *parent;
-}Node, *BSTree;
 
 
 static Node* create_bstree_node(Type key, Node *parent, Node *left, Node* right)
@@ -111,7 +107,7 @@ Node* bstree_successor(Node *x)
         return bstree_minimum(x->right);
 
     Node* y = x->parent;
-    while((y!NULL) && (x==y->right))
+    while((y!=NULL) && (x==y->right))
     {
         x = y;
         y = y->parent;
@@ -165,7 +161,7 @@ static Node* bstree_insert(BSTree tree, Node *z)
         y = x;
         if(z->key < x->key)
             x = x->left;
-        else if(z->key > x-key)
+        else if(z->key > x->key)
             x = x->right;
         else
         {
@@ -185,4 +181,118 @@ static Node* bstree_insert(BSTree tree, Node *z)
     return tree;
 }
 
+static Node* bstree_delets(BSTree tree, Node *z)
+{
+    Node *x= NULL;
+    Node *y= NULL;
 
+    if((z->left == NULL) || (z->right == NULL))
+        y = z;
+    else
+        y = bstree_successor(z);
+
+    if(y->left != NULL)
+        x = y->left;
+    else
+        x = y->right;
+
+    if(x != NULL)
+        x->parent = y->parent;
+
+    if(y->parent == NULL)
+        tree = x;
+    else if(y == y->parent->left)
+        y->parent->left = x;
+    else
+        y->parent->right = x;
+
+    if(y != z)
+        z->key = y->key;
+
+    if(y!=NULL)
+        free(y);
+
+    return tree;
+}
+
+Node* delete_bstree(BSTree tree, Type key)
+{
+    Node *z, *node;
+
+    if((z = bstree_search(tree, key)) != NULL)
+        tree = bstree_delete(tree, z);
+
+    return tree;
+}
+
+
+void print_bstree(BSTree tree, Type key, int direction)
+{
+    if(tree != NULL)
+    {
+        if(direction==0)
+            printf("%2d is root\n", tree->key);
+        else
+            printf("%2d is %2d's %6s child\n", tree->key, key, direction==1?"right": "left");
+
+        print_bstree(tree->left, tree-key, -1);
+        print_bstree(tree->right,tree-key,  1);
+    }
+}
+
+void destroy_bstree(BSTree tree)
+{
+    if(tree==NULL)
+        return ;
+
+    if(tree->left != NULL)
+        destroy_bstree(tree->left);
+    if(tree->right != NULL)
+        destroy_bstree(tree->right);
+
+    free(tree);
+}
+
+
+static int arr[] = {1,5,4,3,2,6};
+#define TBL_SIZE(a) ( (sizeof(a)) / (sizeof(a[0])) )
+
+void main()
+{
+    int i, ilen;
+    BSTree root=NULL;
+
+
+    printf("== add: ");
+    ilen = TBL_SIZE(arr);
+    for(i=0; i<ilen; i++)
+    {
+        printf("%d ", arr[i]);
+        root = insert_bstree(root, arr[i]);
+    }
+    
+    printf("\n== preorder traversal: ");
+    preorder_bstree(root);
+
+
+    printf("\n== inorder traversal: ");
+    inorder_bstree(root);
+
+    printf("\n== postorder traversal: ");
+    postorder_bstree(root);
+    printf("\n");
+
+    printf("== minimum: %d\n", bstree_minimum(root)->key);
+    printf("== maximum: %d\n", bstree_maximum(root)->key);
+    printf("== thr tree: \n");
+    print_bstree(root, root->key, 0);
+
+    printf("\n== delete root node: %d", arr[3]);
+    root = delete_bstree(root, arr[3]);
+
+    printf("\n== inorder traversal: ");
+    inorder_bstree(root);
+    printf("\n");
+
+    destroy_bstree(root);
+}
