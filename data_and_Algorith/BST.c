@@ -67,3 +67,122 @@ Node* iterative_bstree_search(BSTree x, Type key)
 }
 
 
+Node* bstree_maximum(BSTree tree)
+{
+    if(tree == NULL)
+        return NULL;
+
+    while(tree->right != NULL)
+        tree = tree->right;
+    return tree;
+}
+
+
+Node* bstree_minimum(BSTree tree)
+{
+    if(tree == NULL)
+        return NULL;
+
+    while(tree->left != NULL)
+        tree = tree->left;
+    return tree;
+}
+
+
+Node* bstree_predecessor(Node *x)
+{
+    if(x->left != NULL)
+        return bstree_maximum(x->left);
+
+    Node* y = x->parent;
+    while((y!=NULL) && (x==y->left) )
+    {
+        x = y;
+        y = y->parent;
+    }
+
+    return y;
+}
+
+
+Node* bstree_successor(Node *x)
+{
+    if(x->right != NULL)
+        return bstree_minimum(x->right);
+
+    Node* y = x->parent;
+    while((y!NULL) && (x==y->right))
+    {
+        x = y;
+        y = y->parent;
+    }
+
+    return y;
+}
+
+
+/*
+
+static Node* bstree_insert(BSTree tree, Node *z)
+{
+    Node *y = NULL;
+    Node *x = tree;
+
+    while(x != NULL)
+    {
+        y = x;
+        if(z->key < x->key)
+            x = x->left;
+        else
+            x = x->right;
+    }
+
+    z->parent = y;
+    if(y==NULL)
+        tree = z;
+    else if(z->key < y->key)
+        y->left = z;
+    else
+        y->right = z;
+
+    return tree;
+}
+
+*
+*
+*
+*/
+
+
+
+static Node* bstree_insert(BSTree tree, Node *z)
+{
+    Node *y = NULL;
+    Node *x = tree;
+
+    while(x != NULL)
+    {
+        y = x;
+        if(z->key < x->key)
+            x = x->left;
+        else if(z->key > x-key)
+            x = x->right;
+        else
+        {
+            free(z);
+            return tree;
+        }
+    }
+
+    z->parent = y;
+    if(y==NULL)
+        tree = z;
+    else if(z->key < y->key)
+        y->left = z;
+    else
+        y->right = z;
+
+    return tree;
+}
+
+
