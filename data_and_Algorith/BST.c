@@ -4,19 +4,6 @@
 
 
 
-static Node* create_bstree_node(Type key, Node *parent, Node *left, Node* right)
-{
-    Node* p;
-
-    if((p = (Node *)malloc(sizeof(Node))) == NULL)
-        return NULL;
-    p->key = key;
-    p->left = left;
-    p->right = right;
-    p->parent = parent;
-
-    return p;
-}
 
 void preorder_bstree(BSTree tree)
 {
@@ -85,20 +72,6 @@ Node* bstree_minimum(BSTree tree)
 }
 
 
-Node* bstree_predecessor(Node *x)
-{
-    if(x->left != NULL)
-        return bstree_maximum(x->left);
-
-    Node* y = x->parent;
-    while((y!=NULL) && (x==y->left) )
-    {
-        x = y;
-        y = y->parent;
-    }
-
-    return y;
-}
 
 
 Node* bstree_successor(Node *x)
@@ -117,68 +90,70 @@ Node* bstree_successor(Node *x)
 }
 
 
-/*
-
-static Node* bstree_insert(BSTree tree, Node *z)
+Node* bstree_predecessor(Node *x)
 {
-    Node *y = NULL;
-    Node *x = tree;
+    if(x->left != NULL)
+        return bstree_maximum(x->left);
 
-    while(x != NULL)
+    Node* y = x->parent;
+    while((y!=NULL) && (x==y->left) )
     {
-        y = x;
-        if(z->key < x->key)
-            x = x->left;
-        else
-            x = x->right;
+        x = y;
+        y = y->parent;
     }
 
-    z->parent = y;
-    if(y==NULL)
-        tree = z;
-    else if(z->key < y->key)
-        y->left = z;
-    else
-        y->right = z;
-
-    return tree;
+    return y;
 }
 
-*
-*
-*
-*/
 
-
-
-static Node* bstree_insert(BSTree tree, Node *z)
+static Node* create_bstree_node(Type key, Node *parent, Node *left, Node* right)
 {
-    Node *y = NULL;
-    Node *x = tree;
+    Node* p;
 
-    while(x != NULL)
-    {
-        y = x;
-        if(z->key < x->key)
-            x = x->left;
-        else if(z->key > x->key)
-            x = x->right;
-        else
-        {
-            free(z);
-            return tree;
-        }
-    }
+    if((p = (Node *)malloc(sizeof(Node))) == NULL)
+        return NULL;
+    p->key = key;
+    p->left = left;
+    p->right = right;
+    p->parent = parent;
 
-    z->parent = y;
-    if(y==NULL)
-        tree = z;
-    else if(z->key < y->key)
-        y->left = z;
-    else
-        y->right = z;
+    return p;
+}
 
+ static Node* bstree_insert(BSTree tree, Node *z)
+{
+     Node *y = NULL;
+     Node *x = tree;
+ 
+     // 查找z的插入位置
+     while (x != NULL)
+     {
+         y = x;
+         if (z->key < x->key)
+             x = x->left;
+         else
+             x = x->right;
+     }
+ 
+     z->parent = y;
+    if (y==NULL)
+       tree = z;
+     else if (z->key < y->key)
+         y->left = z;
+else
+y->right = z;
     return tree;
+}
+Node* insert_bstree(BSTree tree, Type key)
+{
+     Node *z;    // 新建结点
+ 
+     // 如果新建结点失败，则返回。
+     if ((z=create_bstree_node(key, NULL, NULL, NULL)) == NULL)
+         return tree;
+ 
+     return bstree_insert(tree, z);
+    
 }
 
 static Node* bstree_delets(BSTree tree, Node *z)
