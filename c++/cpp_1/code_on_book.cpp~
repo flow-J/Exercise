@@ -78,7 +78,7 @@ int main()
     std::cout << item1 + item2 << std::endl;
     return 0;
 }*/
-
+/*
 #include <iostream>
 #include "Sales_item.h"
 
@@ -95,4 +95,4 @@ int main()
             << std::endl;
         return -1;
     }
-}
+}*/
