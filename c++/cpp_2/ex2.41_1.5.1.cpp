@@ -10,9 +10,11 @@ struct Sales_data
 
 int main()
 {
-
-    // 读入data1 和 data2 的代码
-    // 如果相同， 求data1 和 data2 的总和
-    Sales_data 
-
+    Sales_data book;
+    double price;
+    std::cin >> book.bookNO >> book.units_sold >> price;
+    book.revenue = book.units_sold * price;
+    std::cout << book.bookNO << " " << " " << book.units_sold <<
+        " " << book.revenue << " " << price << std::endl;
+    return 0;
 }

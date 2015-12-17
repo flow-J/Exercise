@@ -3,43 +3,41 @@
 
 struct Sales_data
 {
-    std::string bookNO;
-    std::string bookName;
-    unsigned units_sold = 0;
-    double price = 0.0;
-    double revenue = 0.0;
+    std::string bookNO; // 书的编号
+    unsigned units_sold = 0; // 销售量
+    double revenue = 0.0; // 收入
 };
 
 int main()
 {
-    Sales_data data1, data2;
-    double price = 0; // 图书价格
-    // 读入data1 和 data2 的代码
-    // 如果相同， 求data1 和 data2 的总和
-    std::cin >> data1.bookNo >> data1.units_sold >> price;
-    data1.revenue = data1.units_sold * price;
+    Sales_data book1, book2;
+    double price1, price2;
+    
+    std::cin >> book1.bookNO >> book1.units_sold >> price1;
+    std::cin >> book2.bookNO >> book2.units_sold >> price2;
+    book1.revenue = book1.units_sold * price1;
+    book2.revenue = book2.units_sold * price2;
 
-
-    // 检查data1 和 data2 是否相同的代码
-    if (data1.bookNo == data2.bookNo)
+    if(book1.bookNO == book2.bookNO)
     {
-        unsigned totalCNt = data1.units_sold + data2.units_sold;
-        double totalRevenue = data1.revenue + data2.revenue;
-
-        std::cout << data1.bookNo << " " << totalCnt
-            << " " << totalRevenue << " ";
-
-        if (totalCNt != 0)
-            std::cout << totalRevenue/totalCNt << std::endl;
+        unsigned totalCnt = book1.units_sold + book2.units_sold;
+        double totalRevenue = book1.revenue + book2.revenue;
+        std::cout << book1.bookNO << " " << totalCnt << " "
+            << totalRevenue;
+        if (totalCnt != 0)
+        {
+            std::cout << totalRevenue / totalCnt << std::endl;
+            return 0;
+        }
         else
+        {
             std::cout << "(no sales)" << std::endl;
-        return 0;
+            return -1;
+        }
     }
     else
     {
-        std::cerr << "Data must refer to the same ISBN"
-            << std::endl;
+        std::cerr << "Data must refer to same ISBN" << std::endl;
         return -1;
     }
-
 }
