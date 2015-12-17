@@ -30,7 +30,7 @@ int main()
     return 0;
 
 }*/
-
+/*
 #include <iostream>
 int main()
 {
@@ -41,4 +41,13 @@ int main()
     *fuck = 12;
     int a = i;
     std::cout << i << " " << a <<" " << *fuck << std::endl;
+}*/
+
+#include <iostream>
+#include <string>
+#include "Sales_data.h"
+int main()
+{
+    Sales_data data1, data2;
+
 }
