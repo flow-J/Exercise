@@ -16,4 +16,27 @@ int main()
     double price = 0; // book price
     std::cin >> data1.bookNo >> data1.units_sold >> price;
     data1.revenue = data1.units_sold * price;
+
+
+    if (data1.bookNo == data2.bookNo)
+    {
+        unsigned totalCNt = data1.units_sold + data2.units_sold;
+        double totalRevenue = data1.revenue + data2.revenue;
+
+        std::cout << data1.bookNo << " " << totalCnt
+            << " " << totalRevenue << " ";
+
+        if (totalCNt != 0)
+            std::cout << totalRevenue/totalCNt << std::endl;
+        else
+            std::cout << "(no sales)" << std::endl;
+        return 0;
+    }
+    else
+    {
+        std::cerr << "Data must refer to the same ISBN"
+            << std::endl;
+        return -1;
+    }
+
 }
