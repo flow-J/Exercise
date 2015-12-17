@@ -4,8 +4,8 @@
 struct Sales_data
 {
     std::string bookNO; // 书的编号
-    unsigned units_sold = 0;
-    double revenue = 0.0;
+    unsigned units_sold = 0; // 销售量
+    double revenue = 0.0; // 收入
 };
 
 int main()
