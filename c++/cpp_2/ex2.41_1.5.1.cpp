@@ -3,7 +3,7 @@
 
 struct Sales_data
 {
-    std::string bookNO;
+    std::string bookNO; // 书的编号
     unsigned units_sold = 0;
     double revenue = 0.0;
 };
