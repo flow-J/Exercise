@@ -1,4 +1,4 @@
-/*
+
 #include <iostream>
 #include <string>
 
@@ -6,7 +6,7 @@ using std::cout;
 using std::cin;
 using std::string;
 using std::endl;
-
+/*
 int main()
 {
     string s;
@@ -68,3 +68,11 @@ while (getline(cin, line))
         cout << line << endl;
 }
 */
+
+int main()
+{
+    string str("some string");
+
+    for (auto c : str)
+        cout << c << endl;
+}
