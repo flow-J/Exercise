@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cctype>
 
 using std::cout;
 using std::cin;
 using std::string;
 using std::endl;
 using std::vector;
+
 /*
 int main()
 {
@@ -137,8 +139,8 @@ int main()
 
 int main()
 {
-    string s("Hello,world.");
-    for (auto it = s.begin(); it != s.end() && !isspace(*it); ++it)
-        *it = toupper(*it);
-    cout << s << endl;
+    vector<int> text(10, 2);
+    for (auto it = text.cbegin();
+            it != text.cend() && !it->empty(); ++it)
+    cout << *it << endl;
 }
