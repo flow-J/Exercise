@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include <iterator>
 
 using std::cout;
 using std::cin;
@@ -136,11 +137,18 @@ int main()
 }
 */
 
-
+/*
 int main()
 {
     vector<int> text(10, 2);
     for (auto it = text.cbegin();
             it != text.cend() && !it->empty(); ++it)
     cout << *it << endl;
+}*/
+
+
+
+int main()
+{
+    auto mid = vi.begin() + vi.size() / 2;
 }
