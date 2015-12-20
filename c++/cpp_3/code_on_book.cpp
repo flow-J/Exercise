@@ -1,11 +1,12 @@
-
 #include <iostream>
 #include <string>
+#include <vector>
 
 using std::cout;
 using std::cin;
 using std::string;
 using std::endl;
+using std::vector;
 /*
 int main()
 {
@@ -89,7 +90,7 @@ int main()
     cout << punct_cnt
         << " punctuation characters in " << s << endl;
 }*/
-
+/*
 
 int main()
 {
@@ -103,4 +104,31 @@ int main()
         if (n < hexdigits.size())
             result += hexdigits[n];
     cout << "Your hex number is: " << result << endl;
+}
+*/
+
+
+
+
+/*
+int main()
+{
+    std::vector<int> fuck;
+    for (int i; cin >> i;fuck.push_back(i));
+    return 0;
+}*/
+/*
+int main()
+{
+    vector<int> v{1,2,3,4,5,6,7,8,9};
+    for (auto i : v)
+        i *= i;
+    for (auto i : v)
+        cout << i << " " << endl;
+}
+*/
+
+int main()
+{
+    vector<int> ivec{42};
 }
