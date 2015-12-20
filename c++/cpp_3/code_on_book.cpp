@@ -127,8 +127,18 @@ int main()
         cout << i << " " << endl;
 }
 */
-
+/*
 int main()
 {
     vector<int> ivec{42};
+}
+*/
+
+
+int main()
+{
+    string s("Hello,world.");
+    for (auto it = s.begin(); it != s.end() && !isspace(*it); ++it)
+        *it = toupper(*it);
+    cout << s << endl;
 }
