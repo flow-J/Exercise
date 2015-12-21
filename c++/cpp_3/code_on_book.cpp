@@ -147,8 +147,22 @@ int main()
 }*/
 
 
-
+/*
 int main()
 {
     auto mid = vi.begin() + vi.size() / 2;
+}*/
+
+int main()
+{   
+    int ia[3][4];
+    int (*p)[4] = ia;
+    p = &ia[2];
+
+    for (auto p = ia; p != ia + 3; ++p)
+    {
+        for (auto q = *p; q != *p + 4; ++q)
+            cout << *q << ' ';
+        cout << endl;
+    }
 }
