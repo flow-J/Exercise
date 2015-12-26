@@ -19,7 +19,7 @@ int main()
     }
 
     if (max_duplicated.first.empty()) cout << "There's no duplicated string." << endl;
-    else cout << "the word" << max_duplicated.first << " occurred " << max_duplicated.second + 1 << " times. " << endl;
+    else cout << "the word " << max_duplicated.first << " occurred " << max_duplicated.second + 1 << " times. " << endl;
 
     return 0;
 }
