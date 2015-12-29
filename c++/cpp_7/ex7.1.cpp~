@@ -36,7 +36,7 @@ int main()
     }
     else
     {
-        std::cerr << "No data?!" << endl;
+        cerr << "No data?!" << endl;
         return -1;
     }
 }
