@@ -17,7 +17,7 @@ int main()
 }
 */
 
-
+/*
 string::size_type find_char(const string &s, char c, string::size_type &occurs)
 {
     auto ret = s.size();
@@ -39,4 +39,17 @@ int main()
     int ctr = 0;
     string s = "abcedfnnnndnd";
     std::cout << find_char(s, 'n', ctr) <<  std::endl;
+}*/
+
+
+int factorial(int val)
+{
+    if (val > 1)
+        return factorial(val - 1) * val;
+    return 1;
+}
+
+int main()
+{
+    std::cout << factorial(5) << std::endl;
 }
