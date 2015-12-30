@@ -7,7 +7,7 @@
 struct Person;
 std::istream &read(std::istream&, Person&);
 
-class Person {
+struct Person {
     Person() = default;
     Person(const std::string sname, const std::string saddr):name(sname), address(saddr) { }
     Person(std::istream &is){ read(is, *this); }
