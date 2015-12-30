@@ -34,11 +34,3 @@ std::ostream &print(std::ostream &os, const Person &person)
 }
 
 #endif
-std::ostream &print(std::ostream &os,const Person &person)
-{
-    os << person.name << " " << person.address;
-    return os;
-}
-
-
-#endif
