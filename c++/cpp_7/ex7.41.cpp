@@ -1,11 +1,14 @@
+
 #include "ex7_41.h"
 
+// constructor
 Sales_data::Sales_data(std::istream &is) : Sales_data()
 {
     std::cout << "Sales_data(istream &is)" << std::endl;
     read(is, *this);
 }
 
+// member functions.
 Sales_data& Sales_data::combine(const Sales_data& rhs)
 {
     units_sold += rhs.units_sold;
@@ -13,6 +16,7 @@ Sales_data& Sales_data::combine(const Sales_data& rhs)
     return *this;
 }
 
+// friend functions
 std::istream &read(std::istream &is, Sales_data &item)
 {
     double price = 0;
