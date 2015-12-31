@@ -1,0 +1,10 @@
+#include <vector>
+class NoDefault {
+public:
+    NoDefault(int i) {}
+};
+
+class C {
+public:
+    C()
+}
