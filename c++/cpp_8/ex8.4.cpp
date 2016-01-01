@@ -11,7 +11,7 @@ using std::endl;
 
 void ReadFileToVec(const string& fileName, vector<string>& vec)
 {
-    ifstream in(fileName);
+    ifstream in(fileName);//构筑一个 ifstream 并打开给定文件 in是自由取的名字
     if (in)
     {
         string buf;
