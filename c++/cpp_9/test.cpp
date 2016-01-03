@@ -52,7 +52,7 @@ int main()
     cout << "ivec: size: " << ivec.size()
         << " capacity: " << ivec.capacity() << endl;
 }*/
-
+/*
 int main()
 {
     vector<string> svec;
@@ -65,4 +65,13 @@ int main()
     for (auto i : svec)
         cout << i << " ";
     cout << svec.size() ;
+}*/
+
+int main()
+{
+    int i = 42;
+    string s = std::to_string(i);
+    double d = std::stod(s);
+
+    cout << s << " " << d << endl;
 }
