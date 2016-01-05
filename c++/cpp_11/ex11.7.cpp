@@ -1,24 +1,22 @@
-#include <map>
 #include <iostream>
+#include <map>
+#include <string>
 #include <algorithm>
 #include <vector>
-#include <string>
 
-using std::vector;
 using std::string;
-using std::cout;
-using std::cin;
-using std::endl;
+using std::vector;
 using std::map;
+using std::cin;
+using std::cout;
 using Families = map<string, vector<string>>;
-
 
 auto make_families()
 {
     Families families;
-    for (string ln;cout << "last name: \n", cin >> ln && ln != "@q";)
-        for (string fn; cout << "|-first name: \n", cin >> ln && "@q";)
-            families[ln].push_back(fn);
+    for (string ln; cout << "Last name:\n", cin >> ln && ln != "@q";)
+        for (string cn; cout << "|-Children's names:\n", cin >> cn && cn != "@q";)
+            families[ln].push_back(cn);
     return families;
 }
 
@@ -26,9 +24,9 @@ auto print(Families const& families)
 {
     for (auto const& family : families)
     {
-        cout << family.first << "\n";
-        for (auto const& last : family.second)
-            cout << last << " ";
+        cout << family.first << ":\n";
+        for (auto const& child : family.second)
+            cout << child << " ";
         cout << "\n";
     }
 }
