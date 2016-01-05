@@ -23,3 +23,27 @@ auto strip(string& str) -> string const&
     str.erase(remove_if(str.begin(), str.end(), ispunct), str.end());
     return str;
 }
+
+auto strip_and_count()
+{
+    Map counts;
+    for (string w; cin >> w; ++counts[strip(w)]);
+    return counts;
+}
+
+auto print(Map const& m)
+{
+    for (auto const& kv : m)
+        cout << kv.first << " : " << kv.second << "\n";
+}
+
+int main()
+{
+    cout << "[ex11.3] Enter a few words please:\n";
+    print(count());
+    cin.clear();
+    cout << "[ex11.e] Enter a fw words please:\n";
+    print(strip_and_count());
+
+    return 0;
+}
