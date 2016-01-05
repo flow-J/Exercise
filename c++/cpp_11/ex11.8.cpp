@@ -5,13 +5,13 @@
 
 int main()
 {
-    std::vector<std::string> exclude = { "aa", "bb", "cc", "dd", "ee", "ff" };
-    for (std::string word; std::cout << "Enter plz:\n", std::cin >> word; )
-    {
-        auto is_excluded = std::binary_search(exclude.cbegin(), exclude.cend(), word);
-        auto reply = is_excluded ? "excluded" : "not excluded";
-        std::cout << reply << std::endl;
+    std::vector<std::string> exclude = {"aa", "bb", "cc"};
+    for (std::string word; std::cin >> word;) {
+        if (std::find(exclude.begin(), exclude.end(), word) != exclude.end())
+            std::cout << "excluded!" << std::endl;
+        else
+            exclude.push_back(word);
     }
-
-    return 0;
+    for (auto const& s : exclude) std::cout << s << " ";
+    std::cout << std::endl;
 }
