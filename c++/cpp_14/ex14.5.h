@@ -21,12 +21,12 @@ private:
     std::string author_;
     std::string pubdate_;
 };
-
+/*
 std::istream& operator>>(std::istream&, Book&);
 std::ostream& operator<<(std::ostream&, const Book&);
 bool operator==(const Book&, const Book&);
 bool operator!=(const Book&, const Book&);
-
+*/
 #endif
 
 std::istream& operator>>(std::istream &in, Book &book)
