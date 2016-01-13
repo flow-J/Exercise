@@ -1,26 +1,25 @@
-#ifndef LTMIT_QUOTE_H
-#define LTMIT_QUOTE_H
+#ifndef LIMIT_QUOTE_H
+#define LIMIT_QUOTE_H
 
-#include "quote.h"
-
-class Limit_quote : public Quote
+class Limit_quote : public Disc_quote
 {
 public:
-    Limit_quote();
-    Limit_quote(const std::string& b, double p, std::size_t max, double disc) : Quote(b, p), max_qty(max), discount(disc) { }
+    Limit_quote() = default;
+    Limit_quote(const std::string& b, double p, std::size_t max, double disc) : Disc_quote(b, p, max, disc) { }
 
-    double net_price(std::size_t n) cnst override;
+    double net_price(std::size_t n) const override
+    { return n * price * (n< quantity ? 1 - discount : 1); }
 
-private:
-    std::size_t max_qty     = 0;
-    double      discount    = 0.0;
+    void debug() const override;
 };
 
-/******************************************/
-double Limit_quote::net_price(std::size_t n) const
+#endif
+
+/****************************************************************/
+
+void LImit_quote::debug() const
 {
-    if (n > max_qty)
-        return max_qty * price * discount + (n - max_qty) * price;
-    else
-        return n * discount * price;
+    Quote::debug();
+    std::cout << " max_qty= " << quantity << " "
+        << "discount= " << discount << " ";
 }
