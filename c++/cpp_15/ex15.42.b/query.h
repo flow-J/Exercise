@@ -43,9 +43,6 @@ inline Query::Query(const string &s) :q(new WordQuery(s)){ }
 /***********************************************************************/
 #include "query.h"
 
-#include <ostream>
-using std::ostream;
-
 ostream&
 operator<<(ostream &os, const Query &query)
 {
