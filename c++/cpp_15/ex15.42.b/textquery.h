@@ -91,9 +91,17 @@ shared_ptr<vector<string>> TextQuery::handlePunct(const string &s)
         {
             string word = s.substr(first, index - first);
             if (!word.empty())
-            {
                 p->push_back(word);
-            }
+            p->push_back(s.substr(index, 1));
+            ++index;
+            first = index;
         }
+        else
+            ++index;
     }
+    string trail = s.substr(first);
+    if (!trail.empty())
+        p->push_back(trail);
+
+    return p;
 }

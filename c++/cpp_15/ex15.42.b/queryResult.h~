@@ -1,0 +1,19 @@
+#ifndef _QUERYRESULT_H
+#define _QUERYRESULT_H
+
+#include <iostream>
+using std::ostream;
+
+#include <memory>
+using std::shared_ptr;
+
+#include <set>
+using std::set;
+
+#include <vector>
+using std::vector;
+
+#include <string>
+using std::string;
+
+#include "textquery.h"
