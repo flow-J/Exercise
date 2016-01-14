@@ -32,7 +32,7 @@ inline Query operator~(const Query &operand)
 #endif
 
 
-#include "queryResult.h"
+#include "queryresult.h"
 #include "textquery.h"
 #include "query.h"
 

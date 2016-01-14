@@ -1,7 +1,7 @@
 #ifndef _ORQUERY_H
 #define _ORQUERY_H
 
-#include <memory>
+#include <momory>
 using std::shared_ptr;
 
 #include "query.h"

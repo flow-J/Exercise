@@ -4,7 +4,7 @@
 #include <string>
 using std::string;
 
-#include "query_base.h"
+#include "query.base.h"
 #include "queryResult.h"
 #include "textquery.h"
 

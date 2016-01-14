@@ -11,7 +11,7 @@ using std::shared_ptr;
 using std::string;
 
 #include "query_base.h"
-#include "queryResult.h"
+#include "queryresult.h"
 #include "wordquery.h"
 
 
