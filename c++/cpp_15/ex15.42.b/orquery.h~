@@ -1,0 +1,4 @@
+#ifndef _ORQUERY_H
+#define _ORQUERY_H
+
+#include <momory>
