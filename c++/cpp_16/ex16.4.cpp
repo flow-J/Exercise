@@ -5,7 +5,7 @@ namespace ch16
     template <typename T,typename Value> // T named iterator will be better;
     auto find(T first, T last,Value const& value)
     {
-        for ( ; first != last && *first != value; ++first);
+        for ( ; first != last && *first != value; ++first);// 最开始for循环忘记加冒号，然后结果一直是return 1(first);
         return first;
     }
 }
