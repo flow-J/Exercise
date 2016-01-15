@@ -5,8 +5,8 @@ namespace ch16
     template <typename T,typename Value> // T named iterator will be better;
     auto find(T first, T last,Value const& value)
     {
-        for ( ; first != last && *first != value; ++first)
-            return first;
+        for ( ; first != last && *first != value; ++first);
+        return first;
     }
 }
 
