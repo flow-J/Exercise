@@ -16,3 +16,4 @@ int main()
     auto ans = vec.cend() != ch16::find(vec.cbegin(), vec.cend(), 100);
     std::cout << (ans ? "found\n" : "not found\n") << std::endl;
 }
+//
