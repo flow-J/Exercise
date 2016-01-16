@@ -3,7 +3,7 @@
 #include <cstring>
 
 template<typename T>
-std::size_t count(std::vector<T> const& vec, value)
+std::size_t count(std::vector<T> const& vec,T value)
 {
     auto count = 0u;
     for(auto const& elem : vec)
