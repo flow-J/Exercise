@@ -18,4 +18,5 @@ int main()
     print(cout, 1, 2, 3) << std::endl;
     print(cout, 2, 2) << std::endl;
     print(cout, 1) << std::endl;
+    print(cout, "string", 2) << std::endl;
 }
