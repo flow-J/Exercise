@@ -47,7 +47,9 @@ std::string debug_rep(const char *p)
 }
 
 template <typename T, typename... Args>
-std::ostream& print(std::ostream& os,const T &t,const Args&... rest)
+std::ostream& print(std::ostream& os,const T &t,const Args&... rest)///error: no matching function for call to ‘print(std::ostream&)’
+     return print(os, rest...);
+
 {
     os << t << " ";
     return print(os, rest...);
