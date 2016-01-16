@@ -12,7 +12,7 @@ std::string debug_rep(const char *p);
 
 template <typename T> std::string debug_rep(const T& t)
 {
-    std::ostringstream ret;
+    std::ostringstream ret;// 可以自动推导类型
     ret << t;
     return ret.str();
 }
