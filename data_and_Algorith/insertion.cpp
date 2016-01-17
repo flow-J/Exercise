@@ -2,14 +2,15 @@ void InsertionSort(int *a, int len)
 {
 	for (int j=1; j<len; j++)
 	{
-		int key = a[j];
-		int i = j-1;
+		int key = a[j];//key 是一个temp；
+		int i = j-1; //int i是j左边的。
 		while (i>=0 && a[i]>key)
 		{
 			a[i+1] = a[i];
-			i--;//不断左移寻找比j大的 （之前一直习惯性的认为是左右相邻的转换 后来发现傻逼了）
+			i--;
 		}
-		a[i+1] = key;
+		a[i+1] = key;  // i--之后马上i+1 i在原地 也就是j左边的 然后用templ - key的值扔给i  
+		// a[i+1] 其实就是a[i] 
 	}
 }
 
