@@ -7,6 +7,8 @@
 
 using namespace std;
 
+string format(const string &num) { return num; }
+
 struct PersonInfo
 {
     string name;
