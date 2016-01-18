@@ -44,14 +44,13 @@ bool read_record(istream& is, vector<PersonInfo>& people)
 
 void format_record(ostream& os, const vector<PersonInfo>& people)
 {
-    string phone = "(\\()?(\\d{ 3 })(\\))?([-. ])?(\\d{ 3 })([-. ]?)(\\d{ 4 })";
+    string phone = "(\\()?(\\d{3})(\\))?([-. ])?(\\d{3})([-. ]?)(\\d{4})";
     regex r(phone);
     smatch m;
 
     for (const auto &entry : people)
     {
-        // for each entry in people
-        ostringstream formatted, badNums; // objects created on each loop
+        ostringstream formatted, badNums;
         for (const auto &nums : entry.phones)
         {
             for (sregex_iterator it(nums.begin(), nums.end(), r), end_it; it != end_it; ++it)
@@ -63,10 +62,10 @@ void format_record(ostream& os, const vector<PersonInfo>& people)
             }
         }
 
-        if (badNums.str().empty()) // there were no bad numbers
-            os << entry.name << " " // print the name
-            << formatted.str() << endl; // and reformatted numbers
-        else // otherwise, print the name and bad numbers
+        if (badNums.str().empty())
+            os << entry.name << " "
+            << formatted.str() << endl;
+        else
             cerr << "input error: " << entry.name
             << " invalid number(s) " << badNums.str() << endl;
     }
