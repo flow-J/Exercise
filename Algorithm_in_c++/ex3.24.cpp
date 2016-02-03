@@ -21,7 +21,6 @@ auto creat(int n)
 int main()
 {
     auto x = creat(20);
-    link t
     for (link t = x; t != 0; t = t->next)
-        
+
 }
