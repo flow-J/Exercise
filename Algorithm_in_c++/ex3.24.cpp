@@ -1,11 +1,9 @@
 #include <iostream>
 
-using namespace std;
-
 struct node
 {
     int item; node *next;
-    node(int x, node *t)
+    auto node(int i, node *t)
         { item = x; next = t; }
 };
 
@@ -16,19 +14,14 @@ auto creat(int n)
     link t = new node(1, NULL); t->next = t;
     link x = t;
     for (int i = 0; i <= n; ++i)
-        x = (x->next = new node (i, t));
-    return x;
+        x = (x->next = new node(i, t));
+    return n;
 }
-
-/*
-auto getSize()
-{
-
-}*/
 
 int main()
 {
-    auto x = creat(10);
-    for (link t = x; t != NULL; t = t->next)
-        cout << t << endl;
+    auto x = creat(20);
+    link t
+    for (link t = x; t != 0; t = t->next)
+        
 }
