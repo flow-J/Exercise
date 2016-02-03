@@ -9,7 +9,12 @@ struct node
 
 typedef node *link;
 
-auto count()
+auto creat(int n)
 {
-    while(*next != )
+    link t = new node(1, NULL); t->next = t;
+    link x = t;
+    for (int i = 0; i <= n; ++i)
+        x = (x->next = new node (i, t));
 }
+
+
