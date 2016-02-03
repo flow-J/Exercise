@@ -30,5 +30,7 @@ int main()
 {
     auto x = creat(10);
     for (link t = x; t != NULL; t = t->next)
-        cout << t << endl;
+    {
+        cout << t->item << " ";
+    }
 }
