@@ -5,7 +5,7 @@ template <typename Item>
 class QUEUE
 {
 public:
-    auto Queue(int) { head = 0; }
+    auto Queue(int) { head = 0; } // if there not a auto  will error
     int empty()
     {  return head == 0; }
     void put(Item x)
