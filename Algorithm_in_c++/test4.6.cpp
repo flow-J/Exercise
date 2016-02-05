@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     for (auto p = argv + 1; p != argv + argc; ++p)
     {
         ifstream input(*p);
-        if (input == ')')
+        if (*input == ')')
             cout << ops.pop() << " ";
         if ((input == '+') || (input == '*'))
             ops.push(input);
