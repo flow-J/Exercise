@@ -17,5 +17,5 @@ int main(int argc, char *argv[])
         while ((a[i] >= '0') && (a[i] <= '9'))
             save.push(10*save.pop() + (a[i++]-'0'));
     }
-    std::cout << save.pop() << std::endl;
+    std::cout << save.pop() << endl;
 }
