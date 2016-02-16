@@ -17,22 +17,27 @@ insertionSort(T t)
         t[i+1] = key;
     }
 }*/
-
-template <typename Container, typename CompareFunc = std::greater<typename Container::value_type>>
-void insertion_sort(Container& seq)
+namespace clrs
 {
-    if (seq.size() <= 1) return ;
-
-    CompareFunc compare;
-    for (int i = 1; i != seq.size(); ++i)
+    namespace ch02
     {
-        auto key = seq[i];
-        auto j = i - 1;
-        while (j >= 0 && compare(seq[j], key))
+        template <typename Container, typename CompareFunc = std::greater<typename Container::value_type>>
+        void insertion_sort(Container& seq)
         {
-            seq[j+1] = seq[j];
-            --j;
+            if (seq.size() <= 1) return ;
+        
+            CompareFunc compare;
+            for (int i = 1; i != seq.size(); ++i)
+            {
+                auto key = seq[i];
+                auto j = i - 1;
+                while (j >= 0 && compare(seq[j], key))
+                {
+                    seq[j+1] = seq[j];
+                    --j;
+                }
+                seq[j + 1] = key;
+            }
         }
-        seq[j + 1] = key;
     }
 }
