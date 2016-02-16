@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <functional>
+/*
 template <typename T>
 insertionSort(T t)
 {
@@ -15,9 +16,9 @@ insertionSort(T t)
         }
         t[i+1] = key;
     }
-}
+}*/
 
-template <typename Container, typename CompareFunc = std::greate<typename Container::value_type>>
+template <typename Container, typename CompareFunc = std::greater<typename Container::value_type>>
 void insertion_sort(Container& seq)
 {
     if (seq.size() <= 1) return ;
