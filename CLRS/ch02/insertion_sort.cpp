@@ -19,3 +19,19 @@ insertionSort(T t)
 
 template <typename Container, typename CompareFunc = std::greate<typename Container::value_type>>
 void insertion_sort(Container& seq)
+{
+    if (seq.size() <= 1) return ;
+
+    CompareFunc compare;
+    for (int i = 1; i != seq.size(); ++i)
+    {
+        auto key = seq[i];
+        auto j = i - 1;
+        while (j >= 0 && compare(seq[j], key))
+        {
+            seq[j+1] = seq[j];
+            --j;
+        }
+        seq[j + 1] = key;
+    }
+}
