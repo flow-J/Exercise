@@ -31,7 +31,7 @@ namespace clrs
             {
                 auto key = seq[i];
                 auto j = i - 1;
-                while (j >= 0 && compare(seq[j], key))
+                while (j >= 0 && key > seq[j]) // key < seq[j]
                 {
                     seq[j+1] = seq[j];
                     --j;
