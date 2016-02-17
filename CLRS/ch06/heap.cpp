@@ -24,15 +24,19 @@ namespace clrs
         }
 
 
-        template <typename Iter, typename Comp = std::greater<IterValue<Iter>>>
-        void heapify(Iter first, Iter last, Iter curr, Comp&& compare = Comp())
-        {
+       template<typename Iter, typename Comp = std::greater<IterValue<Iter> > >
+       void heapify(Iter first, Iter last, Iter curr, Comp&& compare = Comp())
+       {
+            //! left and right child
             Iter l = left(first, curr), r = right(first, curr);
-            auto largest = (l <= last && compare(*l, *curr)) ? l : curr;
-            if (r <= last && compare(*r, *largest))
+        
+            //! find the max or min depending on Comp object
+            auto largest = (l < last    &&  compare(*l, *curr))?    l   :   curr;
+            if(r < last     &&  compare(*r, *largest))
                 largest = r;
-
-            if (largest != curr)
+        
+            //! recur
+            if(largest != curr)
             {
                 std::swap(*largest, *curr);
                 heapify(first, last, largest, compare);
