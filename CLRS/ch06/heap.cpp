@@ -69,7 +69,7 @@ namespace clrs
         {
             auto size = last - first;
             for (auto curr = first + size/2 - 1; curr != first - 1; --curr)
-                heapif(first, last, curr, compare);
+                heapify(first, last, curr, compare);
         }
     }
 }
