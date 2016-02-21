@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "node.cpp"
-#include "binary_search_tree.cpp"
+#include "tree.cpp"
 
 int main()
 {

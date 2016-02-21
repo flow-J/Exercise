@@ -1,3 +1,6 @@
+#ifndef NODE_CPP
+#define NODE_CPP
+
 #include <memory>
 #include <iostream>
 
@@ -35,3 +38,5 @@ struct node
 
     wPointer    successor;
 };
+
+#endif

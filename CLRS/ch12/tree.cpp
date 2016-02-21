@@ -73,7 +73,7 @@ public:
     }
 
 
-    void inoreder_print() const
+    void inorder_print() const
     {
         inorder_tree_walk(root);
     }
@@ -278,6 +278,17 @@ private:
     }
 
 
+    void transplant(sPointer to, sPointer from)
+    {
+        sPointer parent  = to->parent.lock();
+        if (!parent)
+            root    = from;
+        else
+            (to == parent->left ? parent->left : parent->right)
+                = from;
+        if (from)
+                from->parent = to->parent;
+    }
 };
 
 
