@@ -1,4 +1,7 @@
 #include <iostream>
+#include "node.cpp"
+#include <functional>
+#include <stack>
 /*
 struct node
 {
@@ -17,13 +20,12 @@ public:
     using sPointer  = std::shared_ptr<Node>;
     using wPointer  = std::weak_ptr<Node>;
 
-/*
+
     void insert(const KeyType& key, const DataType& data)
     {
         sPointer inserted = std::make_shared<Node>(key, data);
         insert(inserted);
     }
-    */
 
     void insert(sPointer inserted)
     {
@@ -103,14 +105,6 @@ public:
             }
         }
     }
-
-
-
-
-
-
-
-
 
 
     void inoder_print_nonrecur_with_stack() const
@@ -197,34 +191,7 @@ public:
         if (!target->left)
             transplant(target, target->right);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
     inorder()
     {}
 
@@ -236,8 +203,10 @@ public:
         }
         if (k < tree)
     }
+    */
 
 private:
+    sPointer root;
         
     void inorder_tree_walk(sPointer node) const
     {
@@ -248,9 +217,106 @@ private:
             inorder_tree_walk(node->right);
         }
     }
+
+    void inorder_tree_walk_nonrecur_with_stack(sPointer node) const
+    {
+        if (node)
+        {
+            std::stack<sPointer> stk;
+            while (node || !stk.empty())
+            {
+                while (node)
+                {
+                    stk.push(node);
+                    node = node->left;
+                }
+                if (!stk.empty())
+                {
+                    node = stk.top();
+                    stk.pop();
+                    node->print();
+                    node = node->right;
+                }
+            }
+        }
+    }
+    
+    void preorder_tree_walk(sPointer node) const
+    {
+        if (node)
+        {
+            node->print();
+            inorder_tree_walk(node->left);
+            inorder_tree_walk(node->right);
+        }
+    }
+
+    void postorder_tree_walk(sPointer node) const
+    {
+        if (node)
+        {
+            inorder_tree_walk(node->left);
+            inorder_tree_walk(node->right);
+            node->print();
+        }
+    }
+
+    sPointer search_recur(sPointer node, const KeyType key) const
+    {
+        if (!node || key == node->key)
+            return node;
+
+        sPointer next   = (key < node->key) ? node->left : node->print;
+        return search_recur(next, key);
+    }
+
+    sPointer search_itera(sPointer node, const KeyType& key) const
+    {
+        while (node && key != node->key)
+            node = key < node->key ? node->left : node->right;
+        return node;
+    }
+
+
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 inline operator <<(ostream& os, val)
 {
     std::cout << val.
-}
+}*/
