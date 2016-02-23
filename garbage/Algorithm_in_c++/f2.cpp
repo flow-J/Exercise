@@ -24,22 +24,24 @@ long long fibonacci(unsigned n)
 
         fibNMinusTwo = fibNMinusOne;
         fibNMinusOne = fibN;
+
+
+    cout << fibN << endl;
     }
-    return fibN;
 }
 
 int main()
 {
- //   int f[100] = {0,1,2};
- /*
-    int f[100];
-    f[0] = 0; f[1] = 1; f[2] = 2;
-    for (int i = 2; i < 10000; i++)
+    long long f[100] = {0,1,2};
+
+    f[0] = 1; f[1] = 2;
+    for (long long i = 1; i < 100; ++i)
     {
-        f[i] = f[i-1] + f[i-2];
-        print(f);
+        if (f[i] < 0)
+            break;
+        f[i] = (f[i-1] + f[i-2]);
     }
-    */
-    long long f = fibonacci(100);
-    cout << f << endl;
+    print(f);
+//    fibonacci(100);
+  //  cout << f << endl;
 }
