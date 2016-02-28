@@ -47,7 +47,7 @@ public:
             last->right = inserted;
     }
 
-    void insert_recur(sPointer inserted)
+    auto insert_recur(sPointer inserted)
     {
         KeyType key = inserted->key;
 
