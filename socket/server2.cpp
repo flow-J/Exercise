@@ -4,12 +4,11 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
+
 
 int main()
 {
-    //create sockte
-    int serv_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    int serv_sock = socket(AF_INET, SOCK_STREAM, 0);
 
     struct sockaddr_in serv_addr;
     memset(&serv_addr, 0, sizeof(serv_addr));
@@ -23,11 +22,10 @@ int main()
     struct sockaddr_in clnt_addr;
     socklen_t clnt_addr_size = sizeof(clnt_addr);
     int clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_addr, &clnt_addr_size);
-    char str[] = "Hello, World!";
-    write(clnt_sock, str, sizeof(str));
+    char buffer[100];
+    int strlen = recv(clnt_sock, buffer, 100, 0);
+    send(clnt_sock, buffer, strlen, 0);
 
-    unsigned long ip = inet_addr("127.0.0.1");
-    printf("The ip address is %ld\n", ip);
     close(clnt_sock);
     close(serv_sock);
 
