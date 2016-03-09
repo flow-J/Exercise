@@ -16,10 +16,14 @@ class notFlask():
         else:
             raise ValueError('Route "{}" has not been registered'.format(path))
 
+
 app = notFlask()
 
-@app.route("/")
 def hello():
     return "Hello, World!"
 
+@app.route("/")
+
 print app.serve("/")
+
+hello()
