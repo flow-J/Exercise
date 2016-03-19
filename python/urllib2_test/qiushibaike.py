@@ -19,7 +19,7 @@ class Spider_Model:
         myPage = myResponse.read()
         unicodePage = myPage.decode('utf-8')
 
-        myItems = re.findall('<div.*?class="content".*?title="(.*?)">(.*?)</div>', unicodePage, re.S)
+        myItems = re.findall('<div.*?class="content".*?title="(.*?)">(.*?)</div>',unicodePage,re.S) 
         items = []
         for item in myItems:
             items.append([item[0].replace("\n",""),item[1].replace("\n","")])
