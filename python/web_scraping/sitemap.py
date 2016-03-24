@@ -85,24 +85,25 @@ def get_local_pages(url, domain):
     return pages
 
 def dfs(pages):
-    if pages is set():
-        return
-    global url
-    global domain
-    global sites
-    global visited
-    sites = set.union(sites, pages)
-    for page in pages:
-        if page not in visited:
-            print "Visiting", page
-            visited.add(page)
-            url = page
-            pages = get_local_pages(url, domain)
-            dfs(pages)
-
-    print "success"
-
+   if pages is set():
+       return
+   global url
+   global domain
+   global sites
+   global visited
+   sites = set.union(sites,pages)
+   for page in pages:
+       if page not in visited:
+           print "Visiting",page
+           visited.add(page)
+           url = page
+           pages = get_local_pages(url, domain)
+           dfs(pages)
+   
+   print "sucess"
+ 
+ 
 pages = get_local_pages(url, domain)
 dfs(pages)
 for i in sites:
-    print i
+print i
