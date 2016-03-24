@@ -9,8 +9,8 @@ sys.setdefaultencoding('utf8')
 
 
 
-url = "http://www.freebuf.com/"
-domain = "freebuf.com"
+url = "http://127.0.0.1:7777/"
+domain = "127.0.0.1"
 deep = 0
 tmp = ""
 sites = set()
@@ -62,7 +62,7 @@ def get_local_pages(url, domain):
                     if path == '':
                         continue
                     tmp_path = tmp_path + '/' + path
-                ret = ret.replace(o[2], ret_path)
+                ret = ret.replace(o[2], tmp_path)
             print "FixedPage: " + ret
 
         if 'http' not in o[0]:
@@ -99,11 +99,11 @@ def dfs(pages):
            url = page
            pages = get_local_pages(url, domain)
            dfs(pages)
-   
+
    print "sucess"
- 
- 
+
+
 pages = get_local_pages(url, domain)
 dfs(pages)
 for i in sites:
-print i
+    print i
