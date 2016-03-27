@@ -1,0 +1,18 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Flow~{% endblock %}
+
+{% block navbar %}
+<div class="navbar  class=""">
+<html>
+    <head>
+        {% block head %}
+        <title>{% block title %}{% endblock %} -My Application</title>
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+        <p> here is body</p>
+        {% endblock %}
+    </body>
+</html>
