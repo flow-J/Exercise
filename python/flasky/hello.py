@@ -7,7 +7,6 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
-
 @app.route('/user/<name>')
 def name(name):
     return render_template('user.html', name= name)
@@ -32,4 +31,3 @@ def page_not_found(justaword):
 
 if __name__ == '__main__':
     app.run(host= '127.0.0.1', port = 7777)
-
