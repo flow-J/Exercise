@@ -4,8 +4,11 @@ from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'hard to guess string'
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+
+
 
 @app.route('/user/<name>')
 def name(name):
