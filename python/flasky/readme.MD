@@ -16,3 +16,4 @@ flask示例３－１０定义收藏夹图标
 
 发现是继承的命令extends 写成了extern　但是继承部分没问题　自己后加的东西报server error的错误
 
+虽然有点像是废话，但是jinja2可以控制html元素
