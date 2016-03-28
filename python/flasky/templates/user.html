@@ -4,6 +4,10 @@
 
 {% block page_content %}
 <div class="page-header">
+    {% if user %}
     <h1>Hello, {{ name }}!</h1>
+    {% else %}
+    <h1>Hello, Staranger!</h1>
+    {% endif %}
 </div>
 {% endblock %}
