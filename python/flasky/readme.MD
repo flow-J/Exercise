@@ -8,3 +8,11 @@ url_for() 函数是在模板里用的
 
 flask示例３－１０定义收藏夹图标
 来http://www.w3cplus.com/css/understand-the-favicon.html
+
+在base模板里放time失败
+报错　TemplateSyntaxError: expected name or number
+
+刚在模板又报错
+
+发现是继承的命令extends 写成了extern　但是继承部分没问题　自己后加的东西报server error的错误
+
