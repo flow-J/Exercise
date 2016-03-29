@@ -24,3 +24,5 @@ flask示例３－１０定义收藏夹图标
     １  　127.0.0.1/user/base/　　这一步找不到页面　因为前面一步的网址还在。。。
 找到解决方法了...　　templates/base.html里 <a href="base">　在base前加一个/。。
 也就是　a href="/base"。。。完美解决
+
+wtf.巴拉巴拉函数　必须在{% block page_content %} 里　{% endblock %}

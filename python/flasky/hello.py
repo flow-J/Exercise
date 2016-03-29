@@ -4,8 +4,8 @@ from flask import Flask, render_template
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import Required, Email
+from wtforms import StringField, SubmitField, PasswordField, HiddenField
+from wtforms.validators import Required, Email, EqualTo
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -24,24 +24,11 @@ def time():
     return render_template('time.html',
             time = datetime.utcnow())
 
-@app.route('/', methods=['GET', 'POST'])
-def hello():
-    name = None
-    form = NameForm()
-    if form.validate_on_submit():# 首先检查提交的内容是不是为空
-        name = form.name.data   #成功后把data里的值赋给name
-        form.name.data = ''     #这里把data设为空字符串是因为它是输入框里的参数？(或者字符？)
-                                # 如果没有这一步的话输入框被输入一次后不会清空上一次的内容
-    return render_template('index.html', form=form, name=name,
-            time = datetime.utcnow())
 
 @app.route('/base/')
 def base():
     return render_template('base.html')
 
-@app.route('/email/')
-def email():
-    email = None
 
 
 @app.errorhandler(404)
@@ -60,12 +47,40 @@ class NameForm(Form):
 
     submit = SubmitField('Submit') # 表单提交按钮
 
+
+@app.route('/', methods=['GET', 'POST'])
+def hello():
+    name = None
+    form = NameForm()
+    if form.validate_on_submit():# 首先检查提交的内容是不是为空
+        name = form.name.data   #成功后把data里的值赋给name
+        form.name.data = ''     #这里把data设为空字符串是因为它是输入框里的参数？(或者字符？)
+                                # 如果没有这一步的话输入框被输入一次后不会清空上一次的内容
+    return render_template('index.html', form=form, name=name,
+            time = datetime.utcnow())
+
+#************************** Email ***************************************#
 class EmailForm(Form):
     email = StringField('Enter your email.', validators=[Email()])
-    password = PasswordField('password', )
+    password = PasswordField('password', validators=[Required()])
+    confirm_password = HiddenField('password', validators=[Required(), EqualTo('password')])# 确认密码　然后这里还是linux那种隐藏文本字段
+
     submit = SubmitField('确定')
 
 
+"""　
+0 首先用户输入127.0.0.1:7777/email　打开网页
+1 然后模板文件被打开　１行email框 ２行password框
+2 输入完毕以后用户点击　submit　提交　这时validate_on_submit() == True.
+3 然后就是email()函数的工作　if True
+
+
+@app.route('/email/', methods=['GET', 'POST'])
+def email():
+    email = EmailForm()
+    if email.validate_on_submit():
+     #   email.
+"""
 
 
 
