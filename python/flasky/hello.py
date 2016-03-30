@@ -7,6 +7,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, PasswordField, HiddenField
 from wtforms.validators import Required, Email, EqualTo
 from flask import session, redirect, url_for# 会话，　重定向
+from flask import flash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -53,6 +54,9 @@ class NameForm(Form):
 def hello():
     form = NameForm()
     if form.validate_on_submit():# 首先检查提交的内容是不是为空,或者说检测有没有提交
+        old_name = session.get('name')
+        if old_name is not None and old_name != form.name.data:
+            flash('Looks like you have changed your name!')
         session['name'] = form.name.data   #IF TRUE后把data里的值赋给name
         return redirect(url_for('hello'))     #url_for里的参数是函数名
     return render_template('index.html', form=form, name=session.get('name'),
