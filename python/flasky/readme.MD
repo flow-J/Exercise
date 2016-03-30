@@ -26,3 +26,6 @@ flask示例３－１０定义收藏夹图标
 也就是　a href="/base"。。。完美解决
 
 wtf.巴拉巴拉函数　必须在{% block page_content %} 里　{% endblock %}
+
+记录　刚才在表单类里放了中文折腾半天都报错 换成英文就好了
+

@@ -62,25 +62,21 @@ def hello():
 #************************** Email ***************************************#
 class EmailForm(Form):
     email = StringField('Enter your email.', validators=[Email()])
-    password = PasswordField('password', validators=[Required()])
-    confirm_password = HiddenField('password', validators=[Required(), EqualTo('password')])# 确认密码　然后这里还是linux那种隐藏文本字段
+    password = PasswordField('Enter a password', validators=[Required()])
+    confirm_password = HiddenField('confirm password', validators=[Required(), EqualTo('password')])# 确认密码　然后这里还是linux那种隐藏文本字段
 
-    submit = SubmitField('确定')
+    submit = SubmitField('Submit')
 
 
 """　
 0 首先用户输入127.0.0.1:7777/email　打开网页
 1 然后模板文件被打开　１行email框 ２行password框
-2 输入完毕以后用户点击　submit　提交　这时validate_on_submit() == True.
-3 然后就是email()函数的工作　if True
-
-
+2 输入完毕以后用户点击　submit　提交
+"""
 @app.route('/email/', methods=['GET', 'POST'])
 def email():
-    email = EmailForm()
-    if email.validate_on_submit():
-     #   email.
-"""
+    email_form = EmailForm()
+    return render_template('email.html', form=email_form)
 
 
 
