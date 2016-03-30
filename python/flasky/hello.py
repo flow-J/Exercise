@@ -63,7 +63,7 @@ def hello():
 class EmailForm(Form):
     email = StringField('Enter your email.', validators=[Email()])
     password = PasswordField('Enter a password', validators=[Required()])
-    confirm_password = HiddenField('confirm password', validators=[Required(), EqualTo('password')])# 确认密码　然后这里还是linux那种隐藏文本字段
+    confirm_password = PasswordField('confirm password', validators=[Required(), EqualTo('password')])# 确认密码　然后这里还是linux那种隐藏文本字段
 
     submit = SubmitField('Submit')
 
