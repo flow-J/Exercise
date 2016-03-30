@@ -51,13 +51,11 @@ class NameForm(Form):
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
-    name = None
     form = NameForm()
-    if form.validate_on_submit():# 首先检查提交的内容是不是为空
-        name = form.name.data   #成功后把data里的值赋给name
-        form.name.data = ''     #这里把data设为空字符串是因为它是输入框里的参数？(或者字符？)
-                                # 如果没有这一步的话输入框被输入一次后不会清空上一次的内容
-    return render_template('index.html', form=form, name=name,
+    if form.validate_on_submit():# 首先检查提交的内容是不是为空,或者说检测有没有提交
+        session['name'] = form.name.data   #IF TRUE后把data里的值赋给name
+        return redirect(url_for('hello'))     #url_for里的参数是函数名
+    return render_template('index.html', form=form, name=session.get('name'),
             time = datetime.utcnow())
 
 #************************** Email ***************************************#
