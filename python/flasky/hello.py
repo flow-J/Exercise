@@ -6,6 +6,7 @@ from flask.ext.moment import Moment
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, PasswordField, HiddenField
 from wtforms.validators import Required, Email, EqualTo
+from flask import session, redirect, url_for# 会话，　重定向
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
