@@ -8,11 +8,52 @@ from wtforms import StringField, SubmitField, PasswordField, HiddenField
 from wtforms.validators import Required, Email, EqualTo
 from flask import session, redirect, url_for# 会话，　重定向
 from flask import flash
+from flask.ext.sqlalchemy import SQLAlchemy
+import os
+from flask.ext.script import Manager
+
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
+db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+manager = Manager(app)
+
+#***************************** database **********************************#
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    users = db.relationship('User', backref='role')
+
+    def __repr__(self):
+        return '<Role %r>' % self.name
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+    def __repr__(self):
+        return '<User %r>' % self.username
+
+
+
+
+
+
+
+
+
+
 
 #**************************** decorate************************************#
 
@@ -54,19 +95,27 @@ class NameForm(Form):
 def hello():
     form = NameForm()
     if form.validate_on_submit():# 首先检查提交的内容是不是为空,或者说检测有没有提交
-        old_name = session.get('name')
-        if old_name is not None and old_name != form.name.data:
-            flash('Looks like you have changed your name!')
+#       old_name = session.get('name')
+        user = User.query.filter_by(username=form.name.data).first()
+        if user is None:
+            user = User(username = form.name.data)
+            db.session.add(user)
+            session['known'] = False
+        else:
+            session['known'] = True
         session['name'] = form.name.data   #IF TRUE后把data里的值赋给name
+        form.name.data = ''
+#            flash('Looks like you have changed your name!')
         return redirect(url_for('hello'))     #url_for里的参数是函数名
     return render_template('index.html', form=form, name=session.get('name'),
+            known = session.get('known', False),
             time = datetime.utcnow())
 
 #************************** Email ***************************************#
 class EmailForm(Form):
     email = StringField('Enter your email.', validators=[Email()])
-    password = PasswordField('Enter a password', validators=[Required()])
-    confirm_password = PasswordField('confirm password', validators=[Required(), EqualTo('password')])# 确认密码　然后这里还是linux那种隐藏文本字段
+    password = PasswordField('password', validators=[Required(), EqualTo('confirm_password',message='password')])# 确认密码　然后这里还是linux那种隐藏文本字段
+    confirm_password = PasswordField('confirm password', validators=[Required()])
 
     submit = SubmitField('Submit')
 
@@ -87,4 +136,4 @@ def email():
 
 
 if __name__ == '__main__':
-    app.run(host= '127.0.0.1', port = 7777)
+    manager.run()
