@@ -12,6 +12,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import os
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
+from flask.ext.mail import Mail
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -27,6 +28,18 @@ moment = Moment(app)
 manager = Manager(app)
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
+
+#******************** mail coding *************************#
+
+
+app.config['MAIL_SERVER'] = 'smtp.yeah.net'
+app.config['MAIL_PORT'] = 25
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
+
+mail = Mail(app)# 这个必须在config下面　不然就得不到config的东西
 
 #***************************** database **********************************#
 class Role(db.Model):
@@ -140,4 +153,6 @@ def email():
 
 
 if __name__ == '__main__':
+    print os.environ.get('MAIL_USERNAME')
+    print os.environ.get('MAIL_PASSWORD')
     manager.run()
