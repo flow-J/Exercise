@@ -22,5 +22,23 @@ def index():
         return redirect(url_for('./index'))
     return render_template('index.html',
             form=form, name=session.get('name'),
-            known=session.get('known', False),
-            current_time=datetime.utcnow())
+            known=session.get('known', False))
+#            current_time=datetime.utcnow())
+
+@main.route('/user/<name>')
+def name(name):
+    return render_Template('user.html', name=name)
+
+@main.route('/base')
+def base():
+    return render_template('base.html')
+
+#@main.route('/time')
+#def time():
+#    return render_template('time.html', time=datetime.utcnow())
+
+@main.route('/', methods=['GET', 'POST'])
+def email():
+    email_form = EmailForm()
+    return render_template('email.html', form=email_form)
+

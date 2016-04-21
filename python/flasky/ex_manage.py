@@ -143,7 +143,7 @@ def hello():
         session['name'] = form.name.data   #IF TRUE后把data里的值赋给name
         form.name.data = ''
         return redirect(url_for('hello'))     #url_for里的参数是函数名
-    return render_template('index.html', form=form, name=session.get('name'),
+    return render_template('app/templates/index.html', form=form, name=session.get('name'),
             known = session.get('known', False),
             time = datetime.utcnow())
 
