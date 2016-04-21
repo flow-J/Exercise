@@ -31,3 +31,6 @@ wtf.巴拉巴拉函数　必须在{% block page_content %} 里　{% endblock %}
 
 笔记　python代码里的 url_for() 括号里的参数是函数名　　（一开始还以为是html文件的名字╮（╯＿╰）╭
 笔记　刚才忘记import flash　然后flash那一步一直失败也不报错　
+
+２０１６年０４月２１日２２：３３：２４:
+刚才一直报UndefinedError: 'time' is undefined错误　　找了半天发现是html文件里的time变量被我改成current_time了。。。。
