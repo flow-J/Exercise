@@ -15,22 +15,22 @@ class Config:
 
 class DevelopmentConfig(Config): # 开发模式的配置
     DEBUG = True
-    MAIL_SERVER = ''
-    MAIL_PORT =
+    MAIL_SERVER = 'smtp.yeah.net'
+    MAIL_PORT = 25
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_USERNAME = 'hongjunjie2012@yeah.net'
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or\
-            'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+            'sqlite:///' + os.path.join(basedir, 'database-dev.sqlite')
 
 class TestingConfig(Config): # 测试配置
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or\
-            'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
+            'sqlite:///' + os.path.join(basedir, 'database-test.sqlite')
 
-class ProductionConfig(Config):
+class ProductionConfig(Config):# 生产模式配置
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or\
-            'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+            'sqlite:///' + os.path.join(basedir, 'database.sqlite')
 
 config = {
         'development': DevelopmentConfig,
