@@ -20,7 +20,7 @@ def index():
             session['known'] = True
         session['name'] = form.name.data
         form.name.data = ''
-        return redirect(url_for('./index'))
+        return redirect(url_for('.index'))
     return render_template('index.html',
             form=form, name=session.get('name'),
             known=session.get('known', False),
