@@ -38,3 +38,7 @@ wtf.巴拉巴拉函数　必须在{% block page_content %} 里　{% endblock %}
 
 db upgrade的时候报错　'_MigrateConfig' object has no attribute 'configure_args'
 
+２０１６年０４月２５日１６：２４：３６　base.html忘记写endif报错了
+然后pip install 的时候出了个bug：　Could not find .egg-info directory in install record for
+使用　pip install --upgrade setuptools pip　解决
+
