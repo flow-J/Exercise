@@ -28,12 +28,20 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
+                <li><a href="{{ url_for('main.index') }}">Home</a></li>
                 <li><a href="/base">base</a></li> {#　这里只要填文件名就好了　扩展名.html之类的不需要  #}
                 <li><a href="/time">Time</a></li>
                 <li><a href="/user/<name>">user</a></li>
                 <li><a href="/email/">email</a></li>
                 <li><a href="">测试</a></li>
+                <li><a href='/secret/'>secret</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('auth.logout') }}">Sign Out</a></li>
+                {% else %}
+                <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>

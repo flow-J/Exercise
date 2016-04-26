@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import render_template, session, redirect, url_for
 from flask.ext.moment import Moment
+from flask.ext.login import login_required
 
 from . import main
 from .forms import NameForm, EmailForm
@@ -42,3 +43,8 @@ def time():
 def email():
     email_form = EmailForm()
     return render_template('email.html', form=email_form)
+
+@main.route('/secret')
+@login_required
+def secret():
+    return 'Only authenticated users are allowed!'
