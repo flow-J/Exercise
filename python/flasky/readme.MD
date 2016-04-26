@@ -42,3 +42,14 @@ db upgrade的时候报错　'_MigrateConfig' object has no attribute 'configure_
 然后pip install 的时候出了个bug：　Could not find .egg-info directory in install record for
 使用　pip install --upgrade setuptools pip　解决
 
+报错　View function mapping is overwriting an existing endpoint function: auth.login
+解决方法　看了下views.py发现２个函数重名了　
+
+路由函数之类的修改以后需要数据库迁移　不过书上没讲　困惑中。
+
+又出了个问题　User' object has no attribute 'is_active'
+解决方法 在model的class User里　多继承一个UserMixin
+from flask.ext.login import UserMixin
+class User(db.Model, UserMixin)
+
+
