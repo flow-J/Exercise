@@ -55,4 +55,8 @@ db upgrade的时候报错　'_MigrateConfig' object has no attribute 'configure_
 from flask.ext.login import UserMixin
 class User(db.Model, UserMixin)
 
+bug: global name 'logout_user' is not defined
+没有import logout_user ╮（╯＿╰）╭
 
+bug: User' object has no attribute 'confirm' flask
+数据库User类缺少　名为　confirm的函数或者说类的属性吧　　反正我是把它当高级一点的bool值看待的.
