@@ -20,8 +20,7 @@ class DevelopmentConfig(Config): # 开发模式的配置
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'hongjunjie2012@yeah.net'
     MAIL_PASSWORD = 'shadyxv0418'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or\
-            'sqlite:///' + os.path.join(basedir, 'database-dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'postgresql://flow:flow@localhost:5432/flow-database'
 
 class TestingConfig(Config): # 测试配置
     TESTING = True
