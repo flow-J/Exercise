@@ -34,11 +34,12 @@
                 <li><a href="/user/<name>">user</a></li>
                 {#                <li><a href="/email/">email</a></li>#}
                 <li><a href="">测试</a></li>
-                <li><a href='/secret/'>secret</a></li>
+                <li><a href='/secret'>secret</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                 <li><a href="{{ url_for('auth.logout') }}">Sign Out</a></li>
+                <li><a href="{{ url_for('auth.change_password') }}">Change PassWord</a></li>
                 {% else %}
                 <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
                 {% endif %}

@@ -44,6 +44,7 @@ def email():
     email_form = EmailForm()
     return render_template('email.html', form=email_form)
 
+
 @main.route('/secret')
 @login_required
 def secret():

@@ -17,7 +17,7 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def test():
     import unittest
-    tests = unittest.TestLoader().discover('unit_tests')
+    tests = unittest.TestLoader().discover('unit_tests')# discover里放的是测试文件夹的名字
     unittest.TextTestRunner(verbosity=2).run(tests)
 
 if __name__ == '__main__':
