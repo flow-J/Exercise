@@ -56,7 +56,7 @@ class User(db.Model, UserMixin):
 
 
 
-#************############增加 重置密码功能＃＃＃＃##################
+#************############增加 忘记密码? 功能＃＃＃＃##################
 
     def generate_reset_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
