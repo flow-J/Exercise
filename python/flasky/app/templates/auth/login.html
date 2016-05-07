@@ -15,5 +15,10 @@
 </p>
 <div class="col-md-4">
   {{ wtf.quick_form(form) }}
+  <p>
+    forget password?
+    <a href="{{ url_for('auth.password_reset_request') }}">
+        Click here to rest password 
+    </a>
 </div>
 {% endblock %}
