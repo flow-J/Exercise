@@ -160,7 +160,7 @@ def change_email_request():
 @auth.route('/change-email/<token>')
 @login_required
 def change_email(token):
-    if current_user.change_email(token):
+    if current_user.change_email(token):# 这个函数或者说方法 是Users模型里的。
         flash('Your email address has been updated.')
     else:
         flash('In valid request.')
