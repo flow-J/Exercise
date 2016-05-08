@@ -60,3 +60,7 @@ bug: global name 'logout_user' is not defined
 
 bug: User' object has no attribute 'confirm' flask
 数据库User类缺少　名为　confirm的函数或者说类的属性吧　　反正我是把它当高级一点的bool值看待的.
+
+
+如果模板文件只有wtf.quick_form。。。　的话　那一个html文件可以给很多路由函数用....
+
