@@ -145,6 +145,7 @@ def change_email_request():
         if current_user.verify_password(form.password.data):
             new_email = form.email.data
             token = current_user.generate_email_change_token(new_email)
+            print token
             send_email(new_email, 'Confirm your email address',
                     'auth/email/change_email',
                     user=current_user, token=token)
