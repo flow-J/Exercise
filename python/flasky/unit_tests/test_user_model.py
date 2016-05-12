@@ -108,7 +108,7 @@ class UserModelTestCase(unittest.TestCase):
 
     def test_roles_and_permissions(self):
         u = User(email='john@example.com', password='cat')
-        self.assertTrue(u.can(Permission.WRITE_ARTICLES))
+        self.assertTrue(u.can(Permission.WRITE_ARTICLES))# 第一次的时候这里报错  后来发现是13行缺了 Role.insert_roles()函数
         self.assertFalse(u.can(Permission.MODERATE_COMMENTS))
 
     def test_anonymous_user(self):
