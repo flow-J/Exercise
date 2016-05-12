@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import datetime
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import login_manager
@@ -57,8 +58,18 @@ class User(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     confirmed = db.Column(db.Boolean, default=False)
 
+    name = db.Column(db.String(64))
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+
     def __repr__(self):
         return '<User %r>' % self.username
+
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
 
     def __init__(self, **kwargs):# 定义默认的用户角色
         super(User, self).__init__(**kwargs)
@@ -160,4 +171,4 @@ login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Uer.query.get(int(user_id))# 如果能找到用户，返回用户对象。否则返回None
+    return User.query.get(int(user_id))# 如果能找到用户，返回用户对象。否则返回None

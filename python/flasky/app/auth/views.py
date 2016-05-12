@@ -165,3 +165,13 @@ def change_email(token):
     else:
         flash('In valid request.')
     return redirect(url_for('main.index'))
+
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.ping()
+        if not current_user.confirmed \
+                and request.endpoint[:5] != 'auth.':
+                    return redirect(url_for('auth.unconfirmed'))
+
