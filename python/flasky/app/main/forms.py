@@ -1,3 +1,4 @@
+# coding: utf-8
 from datetime import datetime
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, PasswordField, HiddenField
@@ -12,4 +13,11 @@ class EmailForm(Form):
     password = PasswordField('password', validators=[Required(), EqualTo('confirm_password', message='password')])
     confirm_password = PasswordField('confirm password', validators=[Required()])
 
+    submit = SubmitField('Submit')
+
+
+class EditProfileForm(Form): # 资料编辑器
+    name = StringFiled('Real name', validators=[Length(0, 64)])
+    location = StringField('Location', validators=[Length(0, 64)])
+    about_me = TextAreaField('About me')
     submit = SubmitField('Submit')
