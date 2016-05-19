@@ -64,3 +64,12 @@ bug: User' object has no attribute 'confirm' flask
 
 如果模板文件只有wtf.quick_form。。。　的话　那一个html文件可以给很多路由函数用....
 
+
+最近添加的用户权限功能　管理员是通过 
+app/models.py
+class User(UserMixin, db.Model):
+#...
+    def __init__(...):
+    ...
+    if self.role is None: 
+            if self.email == 'hongjunjie2012@yeah.net' 这两行代码确定的。
