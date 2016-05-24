@@ -49,6 +49,14 @@ class Role(db.Model):
         db.session.commit()
 
 
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -63,6 +71,8 @@ class User(db.Model, UserMixin):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -172,3 +182,5 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))# 如果能找到用户，返回用户对象。否则返回None
+
+

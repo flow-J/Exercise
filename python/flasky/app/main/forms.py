@@ -3,6 +3,7 @@ from datetime import datetime
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, PasswordField, HiddenField, TextAreaField, BooleanField, SelectField
 from wtforms.validators import Required, Email, EqualTo, Length, Regexp
+from ..models import Role, User
 
 class NameForm(Form):
     name = StringField('What is your name?', validators=[Required()])
@@ -52,3 +53,7 @@ class EditProfileAdminForm(Form):
                 User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
 
+
+class PostForm(Form):
+    body = TextAreaField('What\'s on your mind', validators=[Required()])
+    submit = SubmitField('Submit')
