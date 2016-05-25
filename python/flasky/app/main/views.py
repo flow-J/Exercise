@@ -31,7 +31,8 @@ def index():
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user, username=username)
+    posts = user.posts.order_by(Post.timestamp.desc()).all()
+    return render_template('user.html', user=user, username=username, posts=posts)
 
 @main.route('/base/')
 def base():
@@ -95,7 +96,7 @@ def edit_profile_admin(id):
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
 
-
+"""
 @main.route('/post', methods=['GET', 'POST'])
 def post_f():
     form = PostForm()
@@ -107,3 +108,4 @@ def post_f():
         return redirect(url_for('.post_f'))
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('post.html', form=form, posts=posts)
+"""
