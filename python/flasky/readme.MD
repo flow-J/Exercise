@@ -73,3 +73,10 @@ class User(UserMixin, db.Model):
     ...
     if self.role is None: 
             if self.email == 'hongjunjie2012@yeah.net' 这两行代码确定的。
+
+
+单元测试里
+def test_roles_and_permissions(self):
+    u = User(email='john@example.com', password='cat')
+    self.assertTrue(u.can(Permission.WRITE_ARTICLES))
+    self.assertFalse(u.can(Permission.MODERATE_COMMENTS))# 第一次的时候这里报错  后来发现是13行缺了 Role.insert_roles()函数
