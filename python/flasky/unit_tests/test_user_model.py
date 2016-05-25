@@ -1,5 +1,7 @@
+# coding : utf-8
 import unittest
 import time
+from datetime import datetime
 from app import create_app, db
 from app.models import User, AnonymousUser, Role, Permission
 
@@ -108,9 +110,27 @@ class UserModelTestCase(unittest.TestCase):
 
     def test_roles_and_permissions(self):
         u = User(email='john@example.com', password='cat')
-        self.assertTrue(u.can(Permission.WRITE_ARTICLES))# 第一次的时候这里报错  后来发现是13行缺了 Role.insert_roles()函数
+        self.assertTrue(u.can(Permission.WRITE_ARTICLES))
         self.assertFalse(u.can(Permission.MODERATE_COMMENTS))
 
     def test_anonymous_user(self):
         u = AnonymousUser()
         self.assertFalse(u.can(Permission.FOLLOW))
+
+    def test_timestamps(self):
+        u = User(password='cat')
+        db.session.add(u)
+        db.session.commit()
+        self.assertTrue(
+                (datetime.utcnow() - u.member_since).total_seconds() < 3)
+        self.assertTrue(
+                (datetime.utcnow() - u.last_seen).total_seconds() < 3)
+
+    def test_ping(self):
+        u = User(password='cat')
+        db.session.add(u)
+        db.session.commit()
+        time.sleep(2)
+        last_seen_before = u.last_seen
+        u.ping()
+        self.assertTrue(u.last_seen > last_seen_before)
