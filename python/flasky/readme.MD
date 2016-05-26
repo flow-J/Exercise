@@ -80,3 +80,12 @@ def test_roles_and_permissions(self):
     u = User(email='john@example.com', password='cat')
     self.assertTrue(u.can(Permission.WRITE_ARTICLES))
     self.assertFalse(u.can(Permission.MODERATE_COMMENTS))# 第一次的时候这里报错  后来发现是13行缺了 Role.insert_roles()函数
+
+
+bug　添加文章分页功能的时候　导航栏一直没有　....然后发现
+#index.html里
+{% if pagination %} if 后面这个单词写错了...
+    <div class="pagination">
+      {{ macros.pagination_widget(pagination, '.index') }}
+    </div>div>       
+{% endif %}  
