@@ -112,3 +112,8 @@ def post_f():
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('post.html', form=form, posts=posts)
 """
+
+@main.route('/post/<int:id>')
+def post(id):
+    post = Post.query.get_or_404(id)
+    return render_template('post.html', posts=[post])

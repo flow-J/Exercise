@@ -29,3 +29,8 @@
 <p>The time is {{ moment(current_time).format('LLL') }}</p>
 <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 {% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
