@@ -54,7 +54,8 @@ def email():
 @main.route('/secret')
 @login_required
 def secret():
-    return 'Only authenticated users are allowed!'
+    return render_template('secret.html')
+#    return 'Only authenticated users are allowed!'
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
