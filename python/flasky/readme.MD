@@ -96,3 +96,7 @@ bug　添加文章分页功能的时候　导航栏一直没有　....然后发�
 最近发现可以用git diff **c **d　来学习flask　毕竟书上的代码永远不完整╮（╯＿╰）╭
 
 sudo find . -name '*.pyc' -type f -print -exec rm -rf {} \; 
+
+
+UndefinedError: 'app.models.AnonymousUser object' has no attribute 'is_administrator'
+模板里报错的那一行　多打了()
