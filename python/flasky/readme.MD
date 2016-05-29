@@ -100,3 +100,6 @@ sudo find . -name '*.pyc' -type f -print -exec rm -rf {} \;
 
 UndefinedError: 'app.models.AnonymousUser object' has no attribute 'is_administrator'
 模板里报错的那一行　多打了()
+
+
+guo.
