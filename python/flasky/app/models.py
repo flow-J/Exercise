@@ -26,8 +26,6 @@ class Role(db.Model):
     users = db.relationship('User', backref='role', lazy='dynamic')
 
 
-    def __repr__(self):
-        return '<Role %r>' % self.name
 
     @staticmethod
     def insert_roles():
@@ -50,39 +48,17 @@ class Role(db.Model):
             db.session.add(role)
         db.session.commit()
 
-
-class Post(db.Model):
-    __tablename__ = 'posts'
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    body_html = db.Column(db.Text)
+    def __repr__(self):
+        return '<Role %r>' % self.name
 
 
-    @staticmethod
-    def generate_fake(count=100):
-        from random import seed, randint
-        import forgery_py
-
-        seed()
-        user_count = User.query.count()
-        for i in range(count):
-            u = User.query.offset(randint(0, user_count -1)).first()
-            p = Post(body=forgery_py.lorem_ipsum.sentences(randint(1,3)),
-                        timestamp=forgery_py.date.date(True),
-                        author=u)
-            db.session.add(p)
-            db.session.commit()
-
-    @staticmethod
-    def on_changed_body(target, value, oldvalue, initiator):
-        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-            'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-            'h1', 'h2', 'h3', 'p']
-        target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'),
-            tags=allowed_tags, strip=True))
+class Follow(db.Model):
+    __tablename__ = 'follows'
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+                                primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+                                primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 class User(db.Model, UserMixin):
@@ -101,6 +77,33 @@ class User(db.Model, UserMixin):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    followed = db.relationship('Follow',
+                                foreign_keys=[Follow.follower_id],
+                                backref=db.backref('follower', lazy='joined'),
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
+    followers = db.relationship('Follow',
+                                foreign_keys=[Follow.followed_id],
+                                backref=db.backref('followed', lazy='joined'),
+
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
+
+    def follow(self, user):
+        if not self.is_following(user):
+            f = Follow(followed=user)
+            self.followed.append(f)
+
+    def unfollow(self, user):
+        f = self.followed.filter_by(followed_id=user.id).first()
+        if f:
+            self.followed.remove(f)
+
+    def is_following(self, user):
+        return self.followed.filter_by(followed_id=user.id).first() is not None
+
+    def is_followed_by(self, user):
+        return self.followers.filter_by(follower_id=user.id).first() is not None
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -234,6 +237,38 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))# 如果能找到用户，返回用户对象。否则返回None
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    body_html = db.Column(db.Text)
+
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0, user_count -1)).first()
+            p = Post(body=forgery_py.lorem_ipsum.sentences(randint(1,3)),
+                        timestamp=forgery_py.date.date(True),
+                        author=u)
+            db.session.add(p)
+            db.session.commit()
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+            'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+            'h1', 'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
 
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)
