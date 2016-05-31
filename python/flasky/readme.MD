@@ -103,3 +103,5 @@ UndefinedError: 'app.models.AnonymousUser object' has no attribute 'is_administr
 
 
 guo.
+
+html-bug class="xxx" class前是必须有空格的
