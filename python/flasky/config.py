@@ -9,6 +9,7 @@ class Config:
         FLASKY_MAIL_SENDER = 'hongjunjie2012 <hongjunjie2012@yeah.net>'
         FLASKY_ADMIN = 'hongjunjie2012'
         FLASKY_POSTS_PER_PAGE = 5 # 每5篇文章一页
+        FLASKY_FOLLOWERS_PER_PAGE = 50
 
         @staticmethod
         def init_app(app):
