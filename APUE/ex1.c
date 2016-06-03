@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-    DIR    *dp;
+    DIR             *dp;
     struct dirent *dirp;
 
     if (argc != 2)
