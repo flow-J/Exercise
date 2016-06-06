@@ -5,18 +5,18 @@ int main(int argc, char **argv)
 {
     int     sockfd, n;
     char    recvline[MAXLINE + 1];
-    struct  sockaddr_in servaddr;
+    struct  sockaddr_in6 servaddr;
 
     if (argc != 2)
         err_quit("usage : a.out <IPaddress>");
 
-    if ( (sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    if ( (sockfd = socket(AF_INET6, SOCK_STREAM, 0)) < 0)
         err_sys("socket error");
 
     bzero(&servaddr, sizeof(servaddr));
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port   = htons(13); //13是时间获取服务器的端口号
-    if (inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0)
+    servaddr.sin6_family = AF_INET6;
+    servaddr.sin6_port   = htons(13); //13是时间获取服务器的端口号
+    if (inet_pton(AF_INET6, argv[1], &servaddr.sin6_addr) <= 0)
         err_quit("inet_pton error for %s", argv[1]);
 //                      SA是 struct sockaddr　通用套接字地址结构
     if (connect(sockfd, (SA *) &servaddr, sizeof(servaddr)) < 0)

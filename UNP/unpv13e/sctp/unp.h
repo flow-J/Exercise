@@ -12,18 +12,11 @@
 
 #include	<sys/types.h>	/* basic system data types */
 #include	<sys/socket.h>	/* basic socket definitions */
-#if TIME_WITH_SYS_TIME
 #include	<sys/time.h>	/* timeval{} for select() */
 #include	<time.h>		/* timespec{} for pselect() */
-#else
-#if HAVE_SYS_TIME_H
-#include	<sys/time.h>	/* includes <time.h> unsafely */
-#else
-#include	<time.h>		/* old system? */
-#endif
-#endif
 #include	<netinet/in.h>	/* sockaddr_in{} and other Internet defns */
 #include	<arpa/inet.h>	/* inet(3) functions */
+#include	<netinet/sctp.h> /* note if sctp does not exist we blow up :> */
 #include	<errno.h>
 #include	<fcntl.h>		/* for nonblocking */
 #include	<netdb.h>
@@ -41,19 +34,8 @@
 # include	<sys/select.h>	/* for convenience */
 #endif
 
-#ifdef	HAVE_SYS_SYSCTL_H
-#ifdef	HAVE_SYS_PARAM_H
-# include	<sys/param.h>	/* OpenBSD prereq for sysctl.h */
-#endif
-# include	<sys/sysctl.h>
-#endif
-
 #ifdef	HAVE_POLL_H
 # include	<poll.h>		/* for convenience */
-#endif
-
-#ifdef	HAVE_SYS_EVENT_H
-# include	<sys/event.h>	/* for kqueue */
 #endif
 
 #ifdef	HAVE_STRINGS_H
@@ -77,14 +59,6 @@
 # include	<pthread.h>
 #endif
 
-#ifdef HAVE_NET_IF_DL_H
-# include	<net/if_dl.h>
-#endif
-
-#ifdef HAVE_NETINET_SCTP_H
-#include	<netinet/sctp.h>
-#endif
-
 /* OSF/1 actually disables recv() and send() in <sys/socket.h> */
 #ifdef	__osf__
 #undef	recv
@@ -98,7 +72,7 @@
 #define	INADDR_NONE	0xffffffff	/* should have been in <netinet/in.h> */
 #endif
 
-#ifndef	SHUT_RD				/* these three POSIX names are new */
+#ifndef	SHUT_RD				/* these three Posix.1g names are quite new */
 #define	SHUT_RD		0	/* shutdown for reading */
 #define	SHUT_WR		1	/* shutdown for writing */
 #define	SHUT_RDWR	2	/* shutdown for reading and writing */
@@ -115,7 +89,7 @@
 #endif
 
 /* Define following even if IPv6 not supported, so we can always allocate
-   an adequately sized buffer without #ifdefs in the code. */
+   an adequately-sized buffer, without #ifdefs in the code. */
 #ifndef INET6_ADDRSTRLEN
 /* $$.Ic INET6_ADDRSTRLEN$$ */
 #define	INET6_ADDRSTRLEN	46	/* max size of IPv6 address string:
@@ -138,11 +112,11 @@
 #endif
 
 /* The structure returned by recvfrom_flags() */
-struct unp_in_pktinfo {
+struct in_pktinfo {
   struct in_addr	ipi_addr;	/* dst IPv4 address */
   int				ipi_ifindex;/* received interface index */
 };
-/* $$.It unp_in_pktinfo$$ */
+/* $$.It in_pktinfo$$ */
 /* $$.Ib ipi_addr$$ */
 /* $$.Ib ipi_ifindex$$ */
 
@@ -150,15 +124,15 @@ struct unp_in_pktinfo {
    implementations support them today.  These two macros really need
     an ALIGN() macro, but each implementation does this differently. */
 #ifndef	CMSG_LEN
-/* $$.Im CMSG_LEN$$ */
+/* $$.Ic CMSG_LEN$$ */
 #define	CMSG_LEN(size)		(sizeof(struct cmsghdr) + (size))
 #endif
 #ifndef	CMSG_SPACE
-/* $$.Im CMSG_SPACE$$ */
+/* $$.Ic CMSG_SPACE$$ */
 #define	CMSG_SPACE(size)	(sizeof(struct cmsghdr) + (size))
 #endif
 
-/* POSIX requires the SUN_LEN() macro, but not all implementations DefinE
+/* Posix.1g requires the SUN_LEN() macro but not all implementations DefinE
    it (yet).  Note that this 4.4BSD macro works regardless whether there is
    a length field or not. */
 #ifndef	SUN_LEN
@@ -167,8 +141,8 @@ struct unp_in_pktinfo {
 	(sizeof(*(su)) - sizeof((su)->sun_path) + strlen((su)->sun_path))
 #endif
 
-/* POSIX renames "Unix domain" as "local IPC."
-   Not all systems DefinE AF_LOCAL and PF_LOCAL (yet). */
+/* Posix.1g renames "Unix domain" as "local IPC".
+   But not all systems DefinE AF_LOCAL and PF_LOCAL (yet). */
 #ifndef	AF_LOCAL
 #define AF_LOCAL	AF_UNIX
 #endif
@@ -176,9 +150,9 @@ struct unp_in_pktinfo {
 #define PF_LOCAL	PF_UNIX
 #endif
 
-/* POSIX requires that an #include of <poll.h> DefinE INFTIM, but many
+/* Posix.1g requires that an #include of <poll.h> DefinE INFTIM, but many
    systems still DefinE it in <sys/stropts.h>.  We don't want to include
-   all the STREAMS stuff if it's not needed, so we just DefinE INFTIM here.
+   all the streams stuff if it's not needed, so we just DefinE INFTIM here.
    This is the standard value, but there's no guarantee it is -1. */
 #ifndef INFTIM
 #define INFTIM          (-1)    /* infinite poll timeout */
@@ -194,46 +168,31 @@ struct unp_in_pktinfo {
 
 /* Miscellaneous constants */
 #define	MAXLINE		4096	/* max text line length */
+#define	MAXSOCKADDR  128	/* max socket address structure size */
 #define	BUFFSIZE	8192	/* buffer size for reads and writes */
 
-/* Define some port number that can be used for our examples */
-#define	SERV_PORT		 9877			/* TCP and UDP */
-#define	SERV_PORT_STR	"9877"			/* TCP and UDP */
-#define	UNIXSTR_PATH	"/tmp/unix.str"	/* Unix domain stream */
-#define	UNIXDG_PATH		"/tmp/unix.dg"	/* Unix domain datagram */
+/* Define some port number that can be used for client-servers */
+#define	SERV_PORT		 9877			/* TCP and UDP client-servers */
+#define	SERV_PORT_STR	"9877"			/* TCP and UDP client-servers */
+/* Some things for SCTP */
+#define SCTP_PDAPI_INCR_SZ 65535	/* increment size for pdapi when adding buf space */
+#define SCTP_PDAPI_NEED_MORE_THRESHOLD 1024	/* need more space threshold */
+#define SERV_MAX_SCTP_STRM	10	/* normal maximum streams */
+#define SERV_MORE_STRMS_SCTP	20	/* larger number of streams */
+
+
+#define	UNIXSTR_PATH	"/tmp/unix.str"	/* Unix domain stream cli-serv */
+#define	UNIXDG_PATH		"/tmp/unix.dg"	/* Unix domain datagram cli-serv */
 /* $$.ix [LISTENQ]~constant,~definition~of$$ */
 /* $$.ix [MAXLINE]~constant,~definition~of$$ */
+/* $$.ix [MAXSOCKADDR]~constant,~definition~of$$ */
 /* $$.ix [BUFFSIZE]~constant,~definition~of$$ */
 /* $$.ix [SERV_PORT]~constant,~definition~of$$ */
 /* $$.ix [UNIXSTR_PATH]~constant,~definition~of$$ */
 /* $$.ix [UNIXDG_PATH]~constant,~definition~of$$ */
 
-/* Following shortens all the typecasts of pointer arguments: */
+/* Following shortens all the type casts of pointer arguments */
 #define	SA	struct sockaddr
-
-#ifndef HAVE_STRUCT_SOCKADDR_STORAGE
-/*
- * RFC 3493: protocol-independent placeholder for socket addresses
- */
-#define	__SS_MAXSIZE	128
-#define	__SS_ALIGNSIZE	(sizeof(int64_t))
-#ifdef HAVE_SOCKADDR_SA_LEN
-#define	__SS_PAD1SIZE	(__SS_ALIGNSIZE - sizeof(u_char) - sizeof(sa_family_t))
-#else
-#define	__SS_PAD1SIZE	(__SS_ALIGNSIZE - sizeof(sa_family_t))
-#endif
-#define	__SS_PAD2SIZE	(__SS_MAXSIZE - 2*__SS_ALIGNSIZE)
-
-struct sockaddr_storage {
-#ifdef HAVE_SOCKADDR_SA_LEN
-	u_char		ss_len;
-#endif
-	sa_family_t	ss_family;
-	char		__ss_pad1[__SS_PAD1SIZE];
-	int64_t		__ss_align;
-	char		__ss_pad2[__SS_PAD2SIZE];
-};
-#endif
 
 #define	FILE_MODE	(S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 					/* default file access permissions for new files */
@@ -252,7 +211,7 @@ typedef	void	Sigfunc(int);	/* for signal handlers */
 #ifndef	HAVE_IF_NAMEINDEX_STRUCT
 struct if_nameindex {
   unsigned int   if_index;  /* 1, 2, ... */
-  char          *if_name;   /* null-terminated name: "le0", ... */
+  char          *if_name;   /* null terminated name: "le0", ... */
 };
 /* $$.It if_nameindex$$ */
 /* $$.Ib if_index$$ */
@@ -273,26 +232,24 @@ struct timespec {
 			/* prototypes for our own library functions */
 int		 connect_nonb(int, const SA *, socklen_t, int);
 int		 connect_timeo(int, const SA *, socklen_t, int);
-int	 daemon_init(const char *, int);
+void	 daemon_init(const char *, int);
 void	 daemon_inetd(const char *, int);
 void	 dg_cli(FILE *, int, const SA *, socklen_t);
 void	 dg_echo(int, SA *, socklen_t);
-int		 family_to_level(int);
 char	*gf_time(void);
 void	 heartbeat_cli(int, int, int);
 void	 heartbeat_serv(int, int, int);
 struct addrinfo *host_serv(const char *, const char *, int, int);
-int		 inet_srcrt_add(char *);
-u_char  *inet_srcrt_init(int);
+int		 inet_srcrt_add(char *, int);
+u_char  *inet_srcrt_init(void);
 void	 inet_srcrt_print(u_char *, int);
-void	 inet6_srcrt_print(void *);
 char   **my_addrs(int *);
 int		 readable_timeo(int, int);
 ssize_t	 readline(int, void *, size_t);
 ssize_t	 readn(int, void *, size_t);
 ssize_t	 read_fd(int, void *, size_t, int *);
 ssize_t	 recvfrom_flags(int, void *, size_t, int *, SA *, socklen_t *,
-		 struct unp_in_pktinfo *);
+		 struct in_pktinfo *);
 Sigfunc *signal_intr(int, Sigfunc *);
 int		 sock_bind_wild(int, int);
 int		 sock_cmp_addr(const SA *, const SA *, socklen_t);
@@ -306,10 +263,34 @@ char	*sock_ntop_host(const SA *, socklen_t);
 int		 sockfd_to_family(int);
 void	 str_echo(int);
 void	 str_cli(FILE *, int);
+void     sctpstr_cli(FILE *fp, int sock_fd, struct sockaddr *to, socklen_t tolen);
+void	 sctpstr_cli_echoall(FILE *fp, int sock_fd, struct sockaddr *to, 
+			     socklen_t tolen);
+uint8_t *sctp_pdapi_recvmsg(int sock_fd, int *rdlen, SA *from, int *from_len,
+			    struct sctp_sndrcvinfo *sri, int *msg_flags);
+int      sctp_bind_arg_list(int sock_fd, char **argv, int argc);
+
+void sctp_print_addresses(struct sockaddr_storage *addrs, int num);
+
+void sctp_check_notification(int sock_fd,char *recvlin);
+
+#define SCTP_ON_DEMAND_HB    1
+#define SCTP_SET_HB_INTERVAL 2
+#define SCTP_DISABLE_HB      3
+int sctp_heartbeat_action(int sock_fd, struct sockaddr *sa, 
+			  int action, u_int value);
+
+sctp_assoc_t
+sctp_address_to_associd(int sock_fd, struct sockaddr *sa, socklen_t);
+
+
+void
+sctp_print_notification(char *notify_buf);
+
 int		 tcp_connect(const char *, const char *);
 int		 tcp_listen(const char *, const char *, socklen_t *);
 void	 tv_sub(struct timeval *, struct timeval *);
-int		 udp_client(const char *, const char *, SA **, socklen_t *);
+int		 udp_client(const char *, const char *, void **, socklen_t *);
 int		 udp_connect(const char *, const char *);
 int		 udp_server(const char *, const char *, socklen_t *);
 int		 writable_timeo(int, int);
@@ -319,15 +300,6 @@ ssize_t	 write_fd(int, void *, size_t, int);
 #ifdef	MCAST
 int		 mcast_leave(int, const SA *, socklen_t);
 int		 mcast_join(int, const SA *, socklen_t, const char *, u_int);
-int		 mcast_leave_source_group(int sockfd, const SA *src, socklen_t srclen,
-								  const SA *grp, socklen_t grplen);
-int		 mcast_join_source_group(int sockfd, const SA *src, socklen_t srclen,
-								 const SA *grp, socklen_t grplen,
-								 const char *ifname, u_int ifindex);
-int		 mcast_block_source(int sockfd, const SA *src, socklen_t srclen,
-							const SA *grp, socklen_t grplen);
-int		 mcast_unblock_source(int sockfd, const SA *src, socklen_t srclen,
-							  const SA *grp, socklen_t grplen);
 int		 mcast_get_if(int);
 int		 mcast_get_loop(int);
 int		 mcast_get_ttl(int);
@@ -337,15 +309,6 @@ int		 mcast_set_ttl(int, int);
 
 void	 Mcast_leave(int, const SA *, socklen_t);
 void	 Mcast_join(int, const SA *, socklen_t, const char *, u_int);
-void	 Mcast_leave_source_group(int sockfd, const SA *src, socklen_t srclen,
-								  const SA *grp, socklen_t grplen);
-void	 Mcast_join_source_group(int sockfd, const SA *src, socklen_t srclen,
-								 const SA *grp, socklen_t grplen,
-								 const char *ifname, u_int ifindex);
-void	 Mcast_block_source(int sockfd, const SA *src, socklen_t srclen,
-							const SA *grp, socklen_t grplen);
-void	 Mcast_unblock_source(int sockfd, const SA *src, socklen_t srclen,
-							  const SA *grp, socklen_t grplen);
 int		 Mcast_get_if(int);
 int		 Mcast_get_loop(int);
 int		 Mcast_get_ttl(int);
@@ -354,7 +317,7 @@ void	 Mcast_set_loop(int, int);
 void	 Mcast_set_ttl(int, int);
 #endif
 
-uint16_t	in_cksum(uint16_t *, int);
+unsigned short	in_cksum(unsigned short *, int);
 
 #ifndef	HAVE_GETADDRINFO_PROTO
 int		 getaddrinfo(const char *, const char *, const struct addrinfo *,
@@ -391,6 +354,10 @@ const char	*inet_ntop(int, const void *, char *, size_t);
 int		 inet_aton(const char *, struct in_addr *);
 #endif
 
+#ifndef	HAVE_ISFDTYPE_PROTO
+int		 isfdtype(int, int);
+#endif
+
 #ifndef	HAVE_PSELECT_PROTO
 int		 pselect(int, fd_set *, fd_set *, fd_set *,
 				 const struct timespec *, const sigset_t *);
@@ -406,7 +373,6 @@ int		 snprintf(char *, size_t, const char *, ...);
 
 			/* prototypes for our own library wrapper functions */
 void	 Connect_timeo(int, const SA *, socklen_t, int);
-int		 Family_to_level(int);
 struct addrinfo *Host_serv(const char *, const char *, int, int);
 const char		*Inet_ntop(int, const void *, char *, size_t);
 void			 Inet_pton(int, const char *, void *);
@@ -417,7 +383,7 @@ char   **My_addrs(int *);
 ssize_t	 Read_fd(int, void *, size_t, int *);
 int		 Readable_timeo(int, int);
 ssize_t	 Recvfrom_flags(int, void *, size_t, int *, SA *, socklen_t *,
-		 struct unp_in_pktinfo *);
+		 struct in_pktinfo *);
 Sigfunc *Signal(int, Sigfunc *);
 Sigfunc *Signal_intr(int, Sigfunc *);
 int		 Sock_bind_wild(int, int);
@@ -426,7 +392,7 @@ char	*Sock_ntop_host(const SA *, socklen_t);
 int		 Sockfd_to_family(int);
 int		 Tcp_connect(const char *, const char *);
 int		 Tcp_listen(const char *, const char *, socklen_t *);
-int		 Udp_client(const char *, const char *, SA **, socklen_t *);
+int		 Udp_client(const char *, const char *, void **, socklen_t *);
 int		 Udp_connect(const char *, const char *);
 int		 Udp_server(const char *, const char *, socklen_t *);
 ssize_t	 Write_fd(int, void *, size_t, int);
@@ -441,7 +407,7 @@ void	 Gettimeofday(struct timeval *, void *);
 int		 Ioctl(int, int, void *);
 pid_t	 Fork(void);
 void	*Malloc(size_t);
-int	 Mkstemp(char *);
+void	 Mktemp(char *);
 void	*Mmap(void *, size_t, int, int, int, off_t);
 int		 Open(const char *, int, mode_t);
 void	 Pipe(int *fds);
@@ -475,19 +441,7 @@ void	 Connect(int, const SA *, socklen_t);
 void	 Getpeername(int, SA *, socklen_t *);
 void	 Getsockname(int, SA *, socklen_t *);
 void	 Getsockopt(int, int, int, void *, socklen_t *);
-#ifdef	HAVE_INET6_RTH_INIT
-int		 Inet6_rth_space(int, int);
-void	*Inet6_rth_init(void *, socklen_t, int, int);
-void	 Inet6_rth_add(void *, const struct in6_addr *);
-void	 Inet6_rth_reverse(const void *, void *);
-int		 Inet6_rth_segments(const void *);
-struct in6_addr *Inet6_rth_getaddr(const void *, int);
-#endif
-#ifdef	HAVE_KQUEUE
-int		 Kqueue(void);
-int		 Kevent(int, const struct kevent *, int,
-				struct kevent *, int, const struct timespec *);
-#endif
+int		 Isfdtype(int, int);
 void	 Listen(int, int);
 #ifdef	HAVE_POLL
 int		 Poll(struct pollfd *, unsigned long, int);
