@@ -1,5 +1,4 @@
-#include "../lib/unp.h"
-#include "error.c"
+#include "unp.h"
 #include <time.h>
 
 int main(int argc, char **argv)
@@ -14,7 +13,7 @@ int main(int argc, char **argv)
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(13);
+    servaddr.sin_port = htons(9999);
 
     Bind(listenfd, (SA *) &servaddr, sizeof(servaddr));
     Listen(listenfd, LISTENQ);

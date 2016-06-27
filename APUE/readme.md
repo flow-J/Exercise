@@ -5,3 +5,5 @@ sudo cp error.c /usr/include/
 
 
 进程 >> 多线程
+
+od -c <filename>
