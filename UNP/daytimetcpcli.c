@@ -13,6 +13,7 @@ int main(int argc, char **argv)
         err_sys("socket error");
 
     bzero(&servaddr, sizeof(servaddr));
+    //servaddr是一个结构体
     servaddr.sin_family = AF_INET;// IPV4
     servaddr.sin_port   = htons(13); //13是时间获取服务器的端口号
     if (inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0)
